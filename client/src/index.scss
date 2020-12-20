@@ -1,0 +1,22 @@
+#root{
+  font-family: Muli, Asap, sans-serif;
+}
+#root > h*{
+  font-family: source-han-sans-simplified-c,sans-serif;
+}
+body, html {
+  height: 100%;
+  width: 100%;
+}
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: .75rem;
+  overflow: hidden;
+}
+
+table {
+  position: relative;
+}
+

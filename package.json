@@ -1,0 +1,35 @@
+{
+  "name": "openhouse-hub",
+  "version": "1.0.0",
+  "description": "Open House App",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthew Lloyd McKenzie",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.5.0",
+    "concurrently": "^5.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "is-empty": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.19",
+    "mongoose": "^5.9.26",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "react-icons": "^3.10.0",
+    "validator": "^13.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
