@@ -15,6 +15,19 @@ body {
   font-size: .75rem;
   overflow: hidden;
 }
+#desk {
+  background-image: url("./assets/desk.png");
+}
+#paper {
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  background-image: linear-gradient(
+    rgba(512,785,731,0.1) 0%, 
+  rgba(255,255,53,0.2) 8%),
+  url(https://www.memonotepad.com/img/paperfibers.png);
+}
 
 table {
   position: relative;

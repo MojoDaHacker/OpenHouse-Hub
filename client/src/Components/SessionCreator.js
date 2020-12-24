@@ -1,21 +1,25 @@
 import React, {useState} from 'react';
 import {Form, Col, Button} from 'react-bootstrap';
+import {useHistory} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 
 
 const SessionCreator = props => {
   const [sessionID, setSessionID] = useState(0)
+  const history = useHistory();
 
-  const handleSubmit = e => {
+  const startSession = e => {
     e.preventDefault();
     e.stopPropagation();
-
-    console.log(props)
+    
+    props.createSession(true)
+    history.push(`/session/${sessionID}`)
+    
   }
 
   return(
   <>
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={startSession}>
       <Form.Row><h2 className="mx-auto">Create a Session</h2></Form.Row>
       <Form.Group controlId="formGridAddress1">
         <Form.Label>Address</Form.Label>
@@ -52,9 +56,7 @@ const SessionCreator = props => {
       </Form.Group>
       <Form.Row>
         <div className="mx-auto">
-          {/* <Link to={`session/${sessionID}`}> */}
-            <Button type="submit">Create Session</Button>
-          {/* </Link> */}
+          <Button type="submit">Create Session</Button>
         </div>
       </Form.Row>
     </Form>

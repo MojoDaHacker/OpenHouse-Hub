@@ -19,7 +19,7 @@ export default class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      isAuthenticated: true
+      isAuthenticated : false
     }
     this.authenticate = this.authenticate.bind(this);
   }
@@ -39,7 +39,7 @@ export default class App extends React.Component {
                   <SessProvider>
                     <SessConsumer>
                       {({session}) => {
-                        console.log(session)
+                        console.log(session.sessInitialized)
                         return session.sessInitialized ? (
                           <Route path="/session/:id"><Session /></Route>
                         ) : (

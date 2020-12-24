@@ -67,7 +67,7 @@ export default class Home extends React.Component{
             <Card>
               <Card.Body>
                 <SessConsumer>
-                  {({setSession}) => <SessionCreator initSess={setSession.initSess()}/>}
+                  {setSession => <SessionCreator {...setSession}/>}
                 </SessConsumer>
               </Card.Body>
             </Card>

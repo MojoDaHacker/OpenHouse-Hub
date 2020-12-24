@@ -29,7 +29,6 @@ export default class Dashboard extends React.Component {
       userName: this.props.name,
       weatherData: false,
       forecastData: false,
-      sessInit: false
     }
   }
   componentDidMount(){
@@ -46,6 +45,7 @@ export default class Dashboard extends React.Component {
   }
 
   render(){
+    console.log(this.state.sessInit)
     return (
       <>
         <Container className="p-0 vh-100 d-flex flex-column main" fluid>
@@ -65,7 +65,7 @@ export default class Dashboard extends React.Component {
                 <Col className="pt-3 pb-3 h-100">
                   <Switch>
                     <Route exact path="/">
-                      <Home initSess={this.state.sessInit} weatherData={this.state.weatherData} forecastData={this.state.forecastData}/>
+                      <Home weatherData={this.state.weatherData} forecastData={this.state.forecastData}/>
                     </Route>
                     <Route exact path="/analytics" >
                       <Analytics />
