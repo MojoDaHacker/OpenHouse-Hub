@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container, Row, Col, Card, Table as BTable} from 'react-bootstrap'
+import {Container, ListGroup} from 'react-bootstrap'
 import {useTable} from 'react-table';
 
 const Table = props => {
@@ -12,51 +12,29 @@ const Table = props => {
     data : React.useMemo(() => products, []),
   })
 
+  console.log(headerGroups)
+
   return(
-    <Container className="h-100 d-flex flex-column" fluid>
-      <Row className="w-100 h-100 overflow-hidden">
-          <BTable className="mb-0" {...getTableProps}>
-            {// Loop over the header rows
-            headerGroups.map(headerGroup => (
-              // Apply the header row props
-              <tr className="d-flex" {...headerGroup.getHeaderGroupProps()}>
-                {// Loop over the headers in each row
-                headerGroup.headers.map(column => (
-                  // Apply the header cell props
-                  <th className="col" {...column.getHeaderProps()}>
-                    {// Render the header
-                    column.render('Header')}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </BTable>
-            <BTable className="w-100 h-100">
-              {/* Apply the table body props */}
-              <tbody className="h-100 overflow-auto" {...getTableBodyProps()}>
-                {// Loop over the table rows
-                rows.map(row => {
-                  // Prepare the row for display
-                  prepareRow(row)
-                  return (
-                    // Apply the row props
-                    <tr className="d-flex" {...row.getRowProps()}>
-                      {// Loop over the rows cells
-                      row.cells.map(cell => {
-                        // Apply the cell props
-                        return (
-                          <td className="flex-grow-1 col" {...cell.getCellProps()}>
-                            {// Render the cell contents
-                            cell.render('Cell')}
-                          </td>
-                        )
-                      })}
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </BTable>
-      </Row>
+    <Container className="pb-0 h-100 overflow-hideen" fluid>
+      <ListGroup className="h-100 d-flex flex-column">
+          {headerGroups.map(val => (
+            <ListGroup.Item as="header" className="d-flex flex-row px-0" style={{display: "table-row"}}>
+              {val.headers.map(col => (
+                <div className="col" style={{display: "table-cell"}}>{col.render("Header")}</div>
+              ))}
+            </ListGroup.Item>
+          ))}
+          <div {...getTableBodyProps()} className="d-flex flex-column overflow-auto" style={{display: "table-body"}}>
+            {rows.map((row, i) => {
+              prepareRow(row)
+              return (
+                <ListGroup.Item className="d-flex px-0" {...row.getRowProps()} style={{display: "table-row"}}>
+                  {row.cells.map(cell => <div className="col" {...cell.getCellProps()}>{cell.render('Cell')}</div>)}
+                </ListGroup.Item>
+              )
+            })}
+          </div>
+      </ListGroup>
     </Container>
   )
 }

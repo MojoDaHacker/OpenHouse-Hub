@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Button} from 'react-bootstrap'
+import {Button, Modal} from 'react-bootstrap'
 import styled from 'styled-components'
 import {SessHook} from '../contexts/sessContext'
 
 const EndSessionButton = props => {
   const session = SessHook();
   const history = useHistory();
+  const [showModal, changeModal] = useState(false);
 
   const endSession = () => {
     console.log(session);
@@ -28,7 +29,25 @@ const EndSessionButton = props => {
     font-weight: bold;
   `
 
-  return <StyledButton onClick={endSession} className="border-0">End Session</StyledButton>
+  return (
+    <>
+      <Modal
+        show={showModal}
+        backdrop="static"
+        dialogClassName="modal-90w"
+        aria-labelledby="example-custom-modal-styling-title"
+      >
+        <Modal.Header>
+          <h3>Are you sure you want to end the Session?</h3>
+        </Modal.Header>
+        <Modal.Body>
+          <Button onClick={() => changeModal(false)}>Cancel</Button>
+          <Button variant="danger" onClick={endSession} >End Session</Button>
+        </Modal.Body>
+      </Modal>
+      <StyledButton onClick={() => changeModal(true)} className="border-0">End Session</StyledButton>
+    </>
+  )
 }
 
 export default EndSessionButton

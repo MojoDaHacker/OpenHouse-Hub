@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Table from '../Components/Table'
 import EndSession from '../Components/EndSessionButton'
 import {Container, Row, Col, Form, Card, Button, ListGroup} from 'react-bootstrap'
 import {Check, X} from 'react-bootstrap-icons'
@@ -45,6 +44,7 @@ const Session = props => {
   return (
     <div className="vh-100" id="desk">
       <Container className="h-100 py-4">
+        
         <Row className="h-100 mx-3">
           <Col className="h-100 d-flex flex-column text-center">
             <h1>Welcome</h1>
@@ -53,7 +53,7 @@ const Session = props => {
                 <h2>Did you know?</h2>
               </Card.Header>
               <Card.Body>
-                J
+                
               </Card.Body>
             </Card>
 

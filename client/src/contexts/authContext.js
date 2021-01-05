@@ -1,28 +1,41 @@
-import React, {useState, createContext} from 'react'
+import React, {useState, createContext, useContext} from 'react'
+import Cookies from 'js-cookie'
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 const authData = {
-  isAuthenticated: true,
+  isAuthenticated: Object.keys(Cookies.get()).length > 0,
   authUser : {}
 }
 
 export const AuthProvider = props => {
   const [auth, setAuth] = useState(authData)
+  const [cookies, setCookies] = useState([])
 
-  function authorizeUser(user){
+  function setCookie(cookie){
+    setCookies([...cookies, cookie])
+  }
+
+  function authorizeUser(authenticated, user = {}){
     setAuth({
+      isAuthenticated : authenticated,
       authUser: user
     })
   }
 
   const authKit = {auth, authorizeUser}
+  const cookieKit = {cookies, setCookie}
 
-  return <AuthContext.Provider value={authKit} {...props} />
+  return <AuthContext.Provider value={{authKit, cookieKit}} {...props} />
 }
 
 export const AuthConsumer = props => {
   return <AuthContext.Consumer {...props}/>
+}
+
+export const AuthHook = props => {
+  const context = useContext(AuthContext)
+  return context
 }
 
 export default 0

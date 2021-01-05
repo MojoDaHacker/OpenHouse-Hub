@@ -45,7 +45,6 @@ export default class Dashboard extends React.Component {
   }
 
   render(){
-    console.log(this.state.sessInit)
     return (
       <>
         <Container className="p-0 vh-100 d-flex flex-column main" fluid>
@@ -62,7 +61,7 @@ export default class Dashboard extends React.Component {
                     <Sidebar />
                   </Navbar>
                 </Col>
-                <Col className="pt-3 pb-3 h-100">
+                <Col className="overflow-hidden pt-3 pb-3 h-100">
                   <Switch>
                     <Route exact path="/">
                       <Home weatherData={this.state.weatherData} forecastData={this.state.forecastData}/>

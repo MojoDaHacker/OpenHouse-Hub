@@ -1,10 +1,9 @@
 import React, {useState, useContext, createContext} from 'react'
 
 const sessData = {
-  sessInitialized: true,
+  sessInitialized: false,
 }
 const SessContext = createContext(sessData);
-
 
 export const SessProvider = props => {
   const [session, setSession] = useState(sessData)

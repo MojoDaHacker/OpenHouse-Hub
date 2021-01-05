@@ -14,11 +14,12 @@ export default class Home extends React.Component{
     super(props)
     this.state = {
       recentLeads : [0],
-      notifications : [0]
+      notifications : []
     }
   }
   
   render(){
+    const notifications = this.state.notifications
     var forecasts = this.props.forecastData && this.props.forecastData.list
     const days = {
       0 : "Sun",
@@ -42,23 +43,17 @@ export default class Home extends React.Component{
                       <span className="ml-3">Good Morning Squidward</span>
                     </Col>
                     <Col className="pl-0">
-                      {this.state.notifications.length > 0 ? (
-                        <div className="d-flex h-100">
+                      <div className="d-flex h-100">
                         <div className="my-auto text-center">
-                          <Badge className="" variant="primary">3</Badge>
+                          <Badge variant={notifications.length > 0 ? "warning" : "primary"}>{notifications.length}</Badge>
                           <Button className="bg-transparent border-0 text-primary" size="sm"><BsArrowDown /></Button>
                         </div>
                         <Card className="w-100 h-100 shadow-sm">
                           <Card.Body>
-
+                            {notifications.length > 0 ? null : <p className="text-success text-center">You have no new notifications!</p>}
                           </Card.Body>
                         </Card>
                       </div>
-                      ) : (
-                        <div className="text-center">
-                          <h5>No new notifications to show.</h5>
-                        </div>
-                      )}
                     </Col>
                   </Row>
                 </Container>
@@ -73,8 +68,8 @@ export default class Home extends React.Component{
             </Card>
           </Col>
           <Col xs={3}>
-            <Card className="uiCard h-100 overflow-hidden">
-              <Card.Header>
+            <Card className="uiCard h-100 overflow-hidden border-0">
+              <Card.Header className="bg-light">
                 <Container>
                   <Row>
                     <p>{this.props.weatherData.name}</p>
@@ -95,7 +90,7 @@ export default class Home extends React.Component{
               <Card.Body className="p-0 overflow-auto position-relative">
                 <ListGroup className="w-100 h-100 position-absolute">
                   {forecasts && forecasts.map((val,i) => (
-                    <ListGroup.Item key={i} className="border-left-0 border-top-0 border-right-0 d-flex justify-content-between align-items-center">
+                    <ListGroup.Item key={i} className=" border-left-0 border-top-0 border-right-0 d-flex justify-content-between align-items-center">
                       <h6>{forecasts && `${days[new Date(forecasts[i].dt * 1000).getDay()]} ${new Date(forecasts[i].dt * 1000).getDate()}`}</h6>
                       <Image src={`http://openweathermap.org/img/wn/${forecasts && forecasts[i].weather[0].icon}@2x.png`} />
                       <h6>{forecasts && Math.round(forecasts[i].main.temp)}</h6>

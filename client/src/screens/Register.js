@@ -1,12 +1,16 @@
 import React from 'react';
 import {Form, Button} from 'react-bootstrap'
+import {Formik} from 'formik'
+import * as Yup from 'yup'
+import Cookies from 'js-cookie'
 import {Header} from 'homePage'
+import {AuthContext} from '../contexts/authContext'
 
 export default class Register extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      name: { value: '', isInvalid : null},
+      name: { value: '', isInvalid : null, feedback: false},
       password: { value: '', isInvalid : null},
       passConf: { value: '', isInvalid : null},
       email: { value: '', isInvalid : null},
@@ -38,78 +42,47 @@ export default class Register extends React.Component{
         break;
     }
   }
-  onSubmitClick(e){
-    e.preventDefault();
-    e.stopPropagation();
-    var form = e.currentTarget;
-    //quick validation
-    if (form.checkValidity() === false) {
-      this.setState({validated: false});
-      return 0
-    }
-
-    var subForm = {};
-    Object.assign(subForm, this.state);
-    delete subForm.validated;
-    delete subForm.formSubmitted;
-
-
-    for ( let prop in subForm){
-      subForm[prop] = Object.values(subForm[prop]).shift()
-    }
-
+  onSubmitClick(values, actions){
+    const {cookieKit, authKit} = this.context;
     const init = {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(subForm),
+      body: JSON.stringify(values),
     }
-
     
-    fetch('http://localhost:5000/api/users/register', init)
-    .then(response => response.json())
-    .then((data) => {
-      console.log(data)
-      console.log(data.errors, data.isValid)
-      if (data.isValid === false){
-        this.setState({formSubmitted: true})
-        for (const key in data.errors) {
-          for (let i = 0; i < Object.keys(data.errors).length; i++) {
-            switch (key) {
-              case "email":
-                this.setState(prevState => ({
-                  email: {                   // object that we want to update
-                    ...prevState.email,    // keep all other key-value pairs
-                    isInvalid: true       // update the value of specific key
-                  }
-                }))
-                break;
-              case "password":
-                this.setState(prevState => ({
-                  password: {                   // object that we want to update
-                    ...prevState.password,    // keep all other key-value pairs
-                    isInvalid: true       // update the value of specific key
-                  }
-                }))
-                break;
-              case "passConf":
-                this.setState(prevState => ({
-                  passConf: {                   // object that we want to update
-                    ...prevState.passConf,    // keep all other key-value pairs
-                    isInvalid: true       // update the value of specific key
-                  }
-                }))
-                break;
-            
-              default:
-                console.log("default case called")
-                break;
-            }
-          }
+    fetch('/register', init)
+    .then(res => {
+      if (res.status === 200) {
+        this.setState({validated: true})
+      } else if (res.status === 401) {
+        this.setState({validated: false})
+      } else {
+        this.setState({validated: false})
+      }
+      return [res.json(), res.status]
+    })
+    .then(data => {
+      if(data[1] === 200) {
+        cookieKit.setCookie(Cookies.get())
+        authKit.authorizeUser(true, data)
+        this.props.history.push("/")
+      } else if (data[1] === 401) {
+        switch (data[0].field) {
+          case "email":
+            this.setState(prevState => ({
+              email: {                   // object that we want to update
+                ...prevState.email,    // keep all other key-value pairs
+                isInvalid: true,       // update the value of specific key
+                feedback: data[0].message
+              }
+            }))
+          break;
+          default:
+            console.log("default case called")
+          break;
         }
       } else {
-        this.setState({validated: true})
-        this.props.authenticate();
-        this.props.history.push("/")
+
       }
     })
   } 
@@ -117,49 +90,82 @@ export default class Register extends React.Component{
     return (
       <>
         <Header header={1} />
-        <div className="mt-5 pt-5">
-          <Form className="mx-auto w-25" onSubmit={ event => this.onSubmitClick(event)} validated={this.state.validated}
-            noValidate>
-            <Form.Group controlId="formSignName" >
-              <Form.Label>Name</Form.Label>
-              <Form.Control type="text" name="name" onChange={(input) => this.onInputChange(input)} isInvalid={this.state.name.isInvalid || this.state.validated === false} required/>
-              <Form.Control.Feedback type="invalid">Name is required!</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="formSignEmail" >
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" name="email" isInvalid={(this.state.email.isInvalid || this.state.validated === false) || this.state.formSubmitted === true} onChange={(input) => this.onInputChange(input)} required/>
-              <Form.Control.Feedback type="invalid">
-              {this.state.formSubmitted ? "Email is missing @ or .com!" : "Email is required!"}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="formSignPass">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" name="pass" isInvalid={(this.state.password.isInvalid || this.state.validated === false) || this.state.formSubmitted === true} onChange={(input) => this.onInputChange(input)} required/>
-              <Form.Control.Feedback type="invalid">
-              {this.state.formSubmitted ? "Password must be between 6 and 30 characters!" : "Password is required!"} 
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="formSignConfPass">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" name="passConf" isInvalid={(this.state.passConf.isInvalid || this.state.validated === false) || this.state.formSubmitted === true} onChange={(input) => this.onInputChange(input)} required/>
-              <Form.Control.Feedback type="invalid">
-              {this.state.formSubmitted ? "Password Confirmation does not match" : "Password Confirmation is required!"}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="formSignCompany">
-              <Form.Label>Company</Form.Label>
-              <Form.Control type="text" name="company" isInvalid={this.state.company.isInvalid || this.state.validated === false} onChange={(input) => this.onInputChange(input)} required/>
-              <Form.Control.Feedback type="invalid">Company is required!</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" name="remember" label="Remember Me" />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Create Account
-            </Button>
-          </Form>
+        <div className="mt-4 h-100 d-flex align-items-center">
+          <Formik 
+            initialValues={{
+              name: '',
+              password: '', 
+              passConf: '', 
+              email: '', 
+              company: '', 
+              formSubmitted: null,
+              validated: null
+            }}
+            validationSchema={Yup.object({
+              name: Yup.string().required('Name is Required!'),
+              password: Yup.string().required('Password is Required!'),
+              passConf: Yup.string().required('Password Confirmation is Required!'),
+              email: Yup.string().email('Email Address is Invalid. Try Again!').required('Email is Required!'),
+            })}
+            onSubmit={(values, actions) => {
+              setTimeout(() => {
+                alert(JSON.stringify(values, null, 2));
+                actions.setSubmitting(false);
+              }, 1000);
+            }}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              values,
+              touched,
+              isValid,
+              errors,
+            }) => (
+              <Form 
+                className="mx-auto mt-5 w-25" 
+                onSubmit={handleSubmit} 
+                noValidate
+              >
+                {Object.keys(values).map(val => {
+                  if(val !== "validated" && val !== "formSubmitted"){
+                    return (
+                      <Form.Group controlId={`formSign${val}`} >
+                        {val === 'passConf' ? 
+                          <Form.Label>Password Confirmation</Form.Label>
+                          :
+                          <Form.Label>{(val[0].toUpperCase()) + val.slice(1)}</Form.Label>
+                        }
+                        {val !== "email" && val !== "password" ? 
+                          val === "company" ?
+                          <Form.Control type="text" onBlur={handleBlur} name={val} isInvalid={touched[val] && errors[val]} value={values[val]} onChange={handleChange} required/> :
+                          <Form.Control type="text" onBlur={handleBlur} name={val} isInvalid={touched[val] && errors[val]} isValid={touched[val] && !errors[val]} value={values[val]} onChange={handleChange} required/> 
+
+                          : 
+                          val == "email" ? 
+                          <Form.Control type={val} onBlur={handleBlur} name={val} isInvalid={touched[val] && errors[val]} isValid={touched[val] && !errors[val]} value={values[val]} onChange={handleChange} required/> :
+                          <Form.Control type={val} onBlur={handleBlur} name={val} isInvalid={touched[val] && errors[val]} isValid={touched[val] && !errors[val]} value={values[val]} onChange={handleChange} required/>
+                        }
+                        <Form.Control.Feedback type="invalid">
+                          {errors[val]}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    )
+                  }
+                })}
+                <Form.Group controlId="formBasicCheckbox">
+                  <Form.Check type="checkbox" name="remember" label="Remember Me" />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Create Account
+                </Button>
+              </Form>
+            )} 
+          </Formik>
         </div>
       </>
     )
   }
 }
+Register.contextType = AuthContext;

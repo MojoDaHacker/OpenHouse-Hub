@@ -1,99 +1,48 @@
 import React from 'react';
 import {Form, Button} from 'react-bootstrap'
+import {Formik} from 'formik'
+import * as Yup from 'yup'
+import Cookies from 'js-cookie'
 import {Header} from 'homePage'
+import {AuthContext} from '../contexts/authContext'
+
 
 export default class LogIn extends React.Component{
   constructor(props){
     super(props)
-    this.state = {
-      email: { value: '', isInvalid : null},
-      password: { value: '', isInvalid : null},
-      formSubmitted: null,
-      validated: null
-    }
   }
 
-  onInputChange(input){
-    switch (input.target.name) {
-      case 'pass':
-        this.setState({ password: { value: input.target.value , isInvalid : input.target.value.length > 0 ? false : true}})
-      break;
-      case 'email':
-        this.setState({ email: { value: input.target.value , isInvalid : input.target.value.length > 0 ? false : true}})
-      break;
-      default:
-        console.log("Default Case");
-      break;
-    }
-  }
+  onSubmitClick(values, actions) {
+    const {cookieKit, authKit} = this.context;
 
-  onSubmitClick(e){
-    e.preventDefault();
-    var form = e.currentTarget;
-    //quick validation
-    if (form.checkValidity() === false) {
-      this.setState({validated: false});
-      return 0
-    }
-    this.setState({formSubmitted: true})
-
-    var subForm = {};
-    Object.assign(subForm, this.state);
-    delete subForm.validated;
-    delete subForm.formSubmitted;
-
-
-    for ( let prop in subForm){
-      subForm[prop] = Object.values(subForm[prop]).shift()
-    }
-
+    console.log("HELOO!")
+    console.log(values)
+    console.log(actions)
     const init = {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(subForm),
+      headers: {
+        "Content-Type": "application/json",
+        // "Access-Control-Allow-Credentials": true,
+      },
+      // credentials: "include",
+      body: JSON.stringify(values),
     }
 
-    
-    fetch('http://localhost:5000/api/users/login', init)
-    .then(response => response.json())
+    fetch('api/users/login', init)
+    .then(res => {
+      console.log(res)
+      return res.text().then(val => [val, res.status])
+    })
     .then(data => {
-      console.log(data)
-      if (data.isValid === false){ //is form validated?
-        this.setState({formSubmitted: true})
-        for (const key in data.errors) {
-          for (let i = 0; i < Object.keys(data.errors).length; i++) {
-            switch (key) {
-              case "email":
-                this.setState(prevState => ({
-                  email: {                   // object that we want to update
-                    ...prevState.email,    // keep all other key-value pairs
-                    isInvalid: true       // update the value of specific key
-                  }
-                }))
-              break;
-              case "password":
-                this.setState(prevState => ({
-                  password: {                   // object that we want to update
-                    ...prevState.password,    // keep all other key-value pairs
-                    isInvalid: true       // update the value of specific key
-                  }
-                }))
-              break;
-              default:
-                console.log("default case called")
-              break;
-            }
-          }
-        }
-      } 
-      else if(Object.keys(data)[0] === "emailnotfound" || Object.keys(data)[0] === "passwordincorrect") { //are credentials valid
-        this.setState({validated: false})
-      } 
-      else {
-        this.setState({validated: true})
-        this.props.authenticate();
+      console.log(data[0])
+      if(data[1] == 200) {
+        cookieKit.setCookie(Cookies.get())
+        authKit.authorizeUser(true, data)
         this.props.history.push("/")
-        
+      } else if (data[1] == 401) {
+        actions.setFieldError("credentialsRejected", "Invalid Email or Password!" )
+      } else {
+        console.log("Something wrong with server!")
       }
     })
   }
@@ -101,44 +50,57 @@ export default class LogIn extends React.Component{
   render(){
     return (
       <>
-        <Header header={1}/>
-        <div className="mt-5 pt-5">
-
-          <Form className="mx-auto w-25" onSubmit={ event => this.onSubmitClick(event)} validated={this.state.validated}
-            noValidate>
-            <Form.Group>
-              <Form.Group controlId="formSignEmail" >
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" name="email" 
-                  isInvalid={(this.state.email.isInvalid || this.state.validated === false) || this.state.formSubmitted === true} 
-                  onChange={(input) => this.onInputChange(input)} required
-                />
-                <Form.Control.Feedback type="invalid">
-                  {this.state.validated ? 
-                   "" : this.state.formSubmitted && this.state.email.isInvalid === true ? "Email or Password is invalid" : "Email is required"}
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="formSignPass">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="pass" 
-                  isInvalid={(this.state.password.isInvalid || this.state.validated === false) || this.state.formSubmitted === true} 
-                  onChange={(input) => this.onInputChange(input)} required
-                />
-                <Form.Control.Feedback type="invalid">
-                  {this.state.formSubmitted ? "" : "Password is required!"} 
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Remember Me" />
-            </Form.Group>
-            
-            <div className="w-100 text-center">
-              <Button className="" variant="primary" type="submit">Submit</Button>
-            </div>        
-          </Form>
+        <Header header={1} />
+        <div className="mt-4 h-100 d-flex align-items-center">
+          <Formik 
+            initialValues={{
+              email: '',
+              password: '',
+              credentialsRejected: null
+            }}
+            validationSchema={Yup.object({
+              email: Yup.string().required('Email is Required!'),
+              password: Yup.string().required('Password is Required!'),
+            })}
+            onSubmit={(values, actions) => this.onSubmitClick(values, actions)}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              values,
+              touched,
+              isValid,
+              errors,
+            }) => (
+              <Form 
+                className="mx-auto mt-5 w-25" 
+                onSubmit={handleSubmit} 
+                noValidate
+              >
+                {Object.keys(values).map(val => {
+                  if(val !== "credentialsRejected") { 
+                    return (
+                      <Form.Group controlId={`formSign${val}`} >
+                        <Form.Label>{(val[0].toUpperCase()) + val.slice(1)}</Form.Label>
+                        <Form.Control type={val} onBlur={handleBlur} name={val} isInvalid={touched[val] && errors[val]} isValid={touched[val] && !errors[val]} value={values[val]} onChange={handleChange} required/> 
+                        <Form.Control.Feedback type="invalid">
+                          {values.credentialsRejected ? errors.credentialsRejected : errors[val]}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    )
+                  }
+                })}
+                <Form.Group controlId="formBasicCheckbox">
+                  <Form.Check type="checkbox" name="remember" label="Remember Me" />
+                </Form.Group>
+                <Button variant="primary" type="submit">Login</Button>
+              </Form>
+            )} 
+          </Formik>
         </div>
       </>
     )
   }
 }
+LogIn.contextType = AuthContext;

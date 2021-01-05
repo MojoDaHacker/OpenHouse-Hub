@@ -9,6 +9,8 @@
     "axios": "^0.19.2",
     "chart.js": "^2.9.4",
     "classnames": "^2.2.6",
+    "formik": "^2.2.6",
+    "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.20",
     "node-sass": "^4.14.1",
@@ -22,9 +24,11 @@
     "react-scripts": "3.4.1",
     "react-table": "^7.6.2",
     "react-transition-group": "^4.4.1",
+    "react-window": "^1.8.6",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "yup": "^0.32.8"
   },
   "scripts": {
     "start": "react-scripts start",

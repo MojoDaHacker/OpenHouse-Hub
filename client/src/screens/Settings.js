@@ -1,14 +1,21 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
+import Cookies from 'js-cookie'
+import {AuthHook} from '../contexts/authContext'
 import {Card, Container, Button, ListGroup, Col, Row, Jumbotron} from 'react-bootstrap'
 
 const Settings = props => {
   const history = useHistory();
-  console.log(history)
-
+  const {authKit} = AuthHook();
   const logout = () => {
-    props.authenticate();
-    history.push("/")
+    fetch('/logout')
+    .then(res => {
+      if(res.status == 200) {
+        Cookies.remove('connect.sid', { path: '/' })
+        authKit.authorizeUser(false)
+        history.push("/")
+      }
+    })
   }
 
   return (
@@ -19,7 +26,7 @@ const Settings = props => {
             <Card.Body className="p-2 overflow-auto">
               <ListGroup>
                 <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-1 border-left-0 border-right-0 border-top-0">Edit Profile</Button>
+                  <Button className="text-primary bg-transparent p-1 border-0">Edit Profile</Button>
                 </ListGroup.Item>
               </ListGroup>
               <Jumbotron className="mt-2">
@@ -38,24 +45,24 @@ const Settings = props => {
               </Jumbotron>
               <ListGroup className="mt-5">
                 <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Invite a Friend</Button>
+                  <Button className="text-primary bg-transparent border-0 p-0 ">Invite a Friend</Button>
                 </ListGroup.Item>
               </ListGroup>
               <ListGroup className="mt-5">
                 <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Rate OpenHouse Hub</Button>
+                  <Button className="text-primary bg-transparent border-0 p-0 ">Rate OpenHouse Hub</Button>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">About OpenHouse Hub</Button>
+                  <Button className="text-primary bg-transparent border-0 p-0 ">About OpenHouse Hub</Button>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Terms & Policy</Button>
+                  <Button className="text-primary bg-transparent border-0 p-0 ">Terms & Policy</Button>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Privacy Policy</Button>
+                  <Button className="text-primary bg-transparent border-0 p-0 ">Privacy Policy</Button>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Report a Problem / Provide Feedback</Button>
+                  <Button className="text-primary bg-transparent border-0 p-0 ">Report a Problem / Provide Feedback</Button>
                 </ListGroup.Item>
               </ListGroup>
               <div className="w-100 text-center">

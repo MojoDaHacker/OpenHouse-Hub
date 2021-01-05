@@ -32,14 +32,13 @@ export default class App extends React.Component {
     return (
       <AuthProvider>
         <AuthConsumer>
-          {kit => {
+          {({authKit}) => {
             return (
               <Switch>
-                {kit.auth.isAuthenticated ? (
+                {authKit.auth.isAuthenticated ? (
                   <SessProvider>
                     <SessConsumer>
                       {({session}) => {
-                        console.log(session.sessInitialized)
                         return session.sessInitialized ? (
                           <Route path="/session/:id"><Session /></Route>
                         ) : (
