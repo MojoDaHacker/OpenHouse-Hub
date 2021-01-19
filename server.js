@@ -1,75 +1,26 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 const session = require('express-session');
 const path = require('path');
 
-
-const {registerUser} = require("./operations/index")
-const users = require("./routes/api/users");
+const activeSession = require("./routes/api/sessions");
 
 const app = express();
 
-// Passport config
-require("./config/passport")(passport);
-
-
-const cookie = {
-  httpOnly : false,
-  sameSite : false,
-}
-
 // middlewares
 app.use(cors());
+app.use(session({secret: "terces12345", saveUninitialized: true , resave: false}));
 app.use(express.static(path.join(__dirname, 'client', 'build')));
-app.use(session({secret: "terces", saveUninitialized: false , resave: false, cookie}));
 app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-// MongoDB configuration and connection
-const db = require("./config/keys.js").mongoURI;
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(() => {
-  console.log("MongoDB successfully connected")
-})
-.catch(err => console.log(err));
-
-// app.get('/ping', function (req, res) {
-//   return res.send('pong');
-//  });
  
-// app.get('/*', function (req, res) {
-//   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-// });
+app.get('/', function (req, res) {
+  console.log("File Send!!");
+});
 
 // Routes
-app.use("/api/users", users);
-
-app.get('/logout', function(req, res){
-  console.log("Logged Out!")
-  req.logout();
-  res.end();
-});
-
-app.post('/login',
-  passport.authenticate('local'),
-  function(req, res) { 
-    res.json({name : req.user.name})
-  }
-);
-
-app.post('/register',
- registerUser,
- passport.authenticate('local'),
- function(req, res){
-  res.json({name : req.user.name});
-  console.log("Registered and Logged In!")
-});
+app.use("/api/sessions", activeSession);
 
 //err handling
 app.use(function (err, req, res, next) {

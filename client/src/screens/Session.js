@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import EndSession from '../Components/EndSessionButton'
-import {Container, Row, Col, Form, Card, Button, ListGroup} from 'react-bootstrap'
-import {Check, X} from 'react-bootstrap-icons'
+import SetupModal from '../Components/sessionSetupModal'
+import EditHostModal from '../Components/EditHostModal'
+import {Container, Row, Col, Form, Card, Button, ListGroup, Image} from 'react-bootstrap'
+import {Check, X, EnvelopeFill, TelephoneFill, Building, PersonCircle, PencilFill} from 'react-bootstrap-icons'
 
+const formTypes = ["Name", "Phone", "Realtor"];
 
 const Session = props => {
   const [currentForm, changeCurrentForm] = useState(0);
   const [isChecked, setCheck] = useState(false);
-  const formTypes = ["Name", "Phone", "Realtor"];
+  const hostIcons = [<PersonCircle/>, <EnvelopeFill/>, <TelephoneFill/>, <Building/>];
   const [input, setInput] = useState("");
   const [visitor, addVisitor] = useState({});
   const [visitors, updateVisitors] = useState([]);
   const [showAppreciation, setAppreciation] = useState(false);
+  const [host, changeHostInfo] = useState({})
+  const [hostAvatar, changeAvatar] = useState(null)
+  const [edit, editHost] = useState(false)
 
   useEffect(() => {
     if (currentForm > 2) {
       updateVisitors(visitors => [...visitors, visitor])
+      saveVisitor(visitor)
       setAppreciation(true)
       setTimeout(() => {
         setAppreciation(false)
@@ -24,12 +31,10 @@ const Session = props => {
     }
   }, [visitors, visitor, isChecked])
 
-
-  const handleChange = e => currentForm !== 2 ? setInput(e.target.value) : setCheck(!isChecked)
+  const handleVisitors = e => currentForm !== 2 ? setInput(e.target.value) : setCheck(!isChecked)
   const handleSubmit = e => {
     e.preventDefault();
     e.stopPropagation();
-
 
     if (currentForm !== 2) {
       setInput("")
@@ -41,24 +46,51 @@ const Session = props => {
       setCheck(false)
     }
   }
+  const saveVisitor = visitor => {
+    console.log(visitor)
+    const opt = {
+      method: 'POST',
+      mode: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(visitor) // body data type must match "Content-Type" header
+    }
+
+    //send vistor to server to be saved
+    fetch("/api/sessions/addVisitor", opt)
+    .then(res => console.log(res.status))
+  }
+  
   return (
     <div className="vh-100" id="desk">
+      <SetupModal edit={[edit, editHost]} changeHost={[host, changeHostInfo]} changeAvatar={changeAvatar} />
+      <EditHostModal editKit={[edit, editHost]} changeHost={[host, changeHostInfo]} changeAvatar={changeAvatar} />
       <Container className="h-100 py-4">
-        
         <Row className="h-100 mx-3">
-          <Col className="h-100 d-flex flex-column text-center">
-            <h1>Welcome</h1>
-            <Card className="h-75 my-auto">
-              <Card.Header className="p-1">
-                <h2>Did you know?</h2>
+          <Col className="h-100 d-flex flex-column">
+            <Card className="h-100 m-3">
+              <Card.Header>
+                <Button className="bg-transparent text-primary border-0" onClick={() => editHost(true)}><PencilFill/></Button>
               </Card.Header>
-              <Card.Body>
-                
+              <Card.Body className="d-flex flex-column justify-content-center h-100">
+                {hostAvatar && <Image className="w-50 mx-auto text-center mb-2" src={hostAvatar} alt="profile Picture" roundedCircle/>}
+                {Object.values(host).map((val, i) => {
+                  if(i !== host.length){
+                    return (
+                      <ListGroup className="text-center" horizontal>
+                        <ListGroup.Item className="m-0 p-1 text-primary border-0">{hostIcons[i]}</ListGroup.Item>
+                        <ListGroup.Item className="m-0 p-1 w-100 border-0"><p>{val}</p></ListGroup.Item>
+                      </ListGroup>
+                    )
+                  } else {
+                    return null
+                  }
+                })}
               </Card.Body>
             </Card>
-
-            <div className="mt-auto">
-              <EndSession className="rounded-pill"></EndSession>
+            <div className="mt-auto text-center">
+              <EndSession className="rounded-pill" numVisitors={visitors.length}/>
             </div>
           </Col>
           <Col className="h-100 overflow-hidden">
@@ -85,7 +117,7 @@ const Session = props => {
                     <Form.Label>{showAppreciation ? `Enjoy the tour ${visitors[visitors.length - 1].Name.split(" ")[0]}` : "Please Sign In" }</Form.Label>
                     {currentForm == 2 ? (
                       <Form.Check
-                        onChange={handleChange}
+                        onChange={handleVisitors}
                         type="checkbox"
                         label={`Have a ${formTypes[currentForm]}?`}
                       />
@@ -95,7 +127,7 @@ const Session = props => {
                         className="border-0 bg-transparent text-center"
                         value={input} 
                         name={formTypes[currentForm]} 
-                        onChange={handleChange} 
+                        onChange={handleVisitors} 
                         type={formTypes[currentForm]} 
                         placeholder={formTypes[currentForm]} 
                       />

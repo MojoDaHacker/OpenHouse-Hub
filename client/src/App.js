@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import HomePage from './homePage';
 import Login from './screens/Login';
 import Register from './screens/Register';
@@ -29,40 +29,6 @@ export default class App extends React.Component {
   }
 
   render(){
-    return (
-      <AuthProvider>
-        <AuthConsumer>
-          {({authKit}) => {
-            return (
-              <Switch>
-                {authKit.auth.isAuthenticated ? (
-                  <SessProvider>
-                    <SessConsumer>
-                      {({session}) => {
-                        return session.sessInitialized ? (
-                          <Route path="/session/:id"><Session /></Route>
-                        ) : (
-                          <Dashboard authenticate={[this.state.isAuthenticated, this.authenticate]}/>
-                        )
-                      }}
-                    </SessConsumer>
-                  </SessProvider>
-                ) : (
-                  <>
-                    <Route path="/register" render={({history}) => (
-                      <Register history={history} authenticate={this.authenticate}/>
-                      )}/>
-                    <Route path="/login" render={({history}) => (
-                      <Login history={history} authenticate={this.authenticate}/>
-                      )}/>
-                    <Route exact path="/"><HomePage /></Route>
-                  </>
-                )}
-              </Switch>
-            )
-          }}
-        </AuthConsumer>
-      </AuthProvider>
-    );
-  }
+    return <Session />
+  } 
 }
