@@ -4,17 +4,17 @@ import firebase from '../lib/firebaseAuth'
 export const AuthContext = React.createContext(firebase.auth())
 
 const useFirebaseAuth = props => {
+  const [user, setUser] = useState(null)
   const FireAuth = useContext(AuthContext)
-
-  console.log(firebase)
+  
   useEffect(() => {
-    console.log(firebase.auth().currentUser)
+    setUser(window.document.cookie)
+    fetch('/api/getSessions')
+    .then(res => res.json())
+    .then(res => console.log(res))
   }, [])
 
-  if (typeof window !== undefined) {
-    const Router = useRouter()
-  }
-
+  return user
   return (
     <FireAuth.Provider children={props.children}/>
   )
