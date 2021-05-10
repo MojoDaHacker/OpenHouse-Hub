@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Chart from '../Components/Chart';
 import {Container, Row, Col, Button, Media, Card, Image,
   ListGroup, Badge} from 'react-bootstrap'
-import {IconContext} from 'react-icons'
-import {FcHome} from 'react-icons/fc'
-import {BsArrowUp, BsArrowDown} from 'react-icons/bs'
+// import {IconContext} from 'react-icons'
+// import {FcHome} from 'react-icons/fc'
+// import {BsArrowUp, BsArrowDown} from 'react-icons/bs'
 import SessionCreator from '../Components/SessionCreator'
-import profile from '../assets/profile.jpg'
+// import profile from '../assets/profile.jpg'
 import {SessConsumer} from '../contexts/sessContext';
 
 export default class Home extends React.Component{
@@ -32,45 +32,51 @@ export default class Home extends React.Component{
     }
     return (
       <Container className="h-100" fluid>
-        <Row className="h-100">
+        <Row className="m-3">
+          <Col>
+            <Container>
+              <Row>
+                <Col className="border-right border-primary">
+                  {/* <Image className="border border-primary" style={{width: "4.5rem"}} src={profile} alt="User Profile Picture" roundedCircle/> */}
+                  <span className="ml-3">Good Morning Squidward</span>
+                </Col>
+                <Col className="pl-0">
+                  <div className="d-flex h-100">
+                    <div className="my-auto text-center">
+                      <Badge variant={notifications.length > 0 ? "warning" : "primary"}>{notifications.length}</Badge>
+                      <Button className="bg-transparent border-0 text-primary" size="sm">a</Button>
+                    </div>
+                    <Card className="w-100 h-100 shadow-sm">
+                      <Card.Body>
+                        {notifications.length > 0 ? null : <p className="text-success text-center">You have no new notifications!</p>}
+                      </Card.Body>
+                    </Card>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </Col>
+        </Row>
+        <Row className="h-100 m-3">
           <Col className="my-auto" xs={9}>
-            <Card className="mb-3">
-              <Card.Body>
-                <Container fluid>
-                  <Row>
-                    <Col className="border-right border-primary">
-                      <Image className="border border-primary" style={{width: "4.5rem"}} src={profile} alt="User Profile Picture" roundedCircle/>
-                      <span className="ml-3">Good Morning Squidward</span>
-                    </Col>
-                    <Col className="pl-0">
-                      <div className="d-flex h-100">
-                        <div className="my-auto text-center">
-                          <Badge variant={notifications.length > 0 ? "warning" : "primary"}>{notifications.length}</Badge>
-                          <Button className="bg-transparent border-0 text-primary" size="sm"><BsArrowDown /></Button>
-                        </div>
-                        <Card className="w-100 h-100 shadow-sm">
-                          <Card.Body>
-                            {notifications.length > 0 ? null : <p className="text-success text-center">You have no new notifications!</p>}
-                          </Card.Body>
-                        </Card>
-                      </div>
-                    </Col>
-                  </Row>
-                </Container>
-              </Card.Body>
-            </Card>
-            <Card>
+            <div className="border-bottom mb-3">
+              <h1>Open House Sessions</h1>
+            </div>
+            <div>
+              <Button>Create a Session</Button>
+            </div>
+            {/* <Card>
               <Card.Body>
                 <SessConsumer>
                   {setSession => <SessionCreator {...setSession}/>}
                 </SessConsumer>
               </Card.Body>
-            </Card>
+            </Card> */}
           </Col>
           <Col xs={3}>
-            <Card className="uiCard h-100 overflow-hidden border-0">
+            <Card className="h-100 overflow-hidden border-0">
               <Card.Header className="bg-light">
-                <Container>
+                {/* <Container>
                   <Row>
                     <p>{this.props.weatherData.name}</p>
                   </Row>
@@ -85,10 +91,10 @@ export default class Home extends React.Component{
                     <Col><p>{this.props.weatherData.main && Math.round(this.props.weatherData.main.temp_max)}</p></Col>
                     <Col><p>{this.props.weatherData.main && Math.round(this.props.weatherData.main.temp_min)}</p></Col>
                   </Row>
-                </Container>
+                </Container> */}
               </Card.Header>
               <Card.Body className="p-0 overflow-auto position-relative">
-                <ListGroup className="w-100 h-100 position-absolute">
+                {/* <ListGroup className="w-100 h-100 position-absolute">
                   {forecasts && forecasts.map((val,i) => (
                     <ListGroup.Item key={i} className=" border-left-0 border-top-0 border-right-0 d-flex justify-content-between align-items-center">
                       <h6>{forecasts && `${days[new Date(forecasts[i].dt * 1000).getDay()]} ${new Date(forecasts[i].dt * 1000).getDate()}`}</h6>
@@ -96,7 +102,7 @@ export default class Home extends React.Component{
                       <h6>{forecasts && Math.round(forecasts[i].main.temp)}</h6>
                     </ListGroup.Item>
                   ))}
-                </ListGroup>
+                </ListGroup> */}
               </Card.Body>
             </Card>
           </Col>
@@ -177,9 +183,9 @@ function QuickAnalytics(props){
   return(
     <>
       <Media className="flex-row-reverse" style={{height: "5.5rem"}}>
-        <IconContext.Provider value={{size: "3rem", style:{fontWeight: "200"}, className: "p-1 rounded-circle align-self-center"}}>
+        {/* <IconContext.Provider value={{size: "3rem", style:{fontWeight: "200"}, className: "p-1 rounded-circle align-self-center"}}>
           <FcHome />
-        </IconContext.Provider>
+        </IconContext.Provider> */}
         <Media.Body className="pr-3 text-right">
           {quickAnalysis.length > 0 ?
           quickAnalysis.map(val => (

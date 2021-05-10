@@ -1,6 +1,6 @@
 import React from 'react';
 import {Switch, Route, Link} from 'react-router-dom';
-import Home from './Home';
+import Home from '../pages/Home';
 import Header from '../Components/Header';
 import LeadCenter from './LeadCenter';
 import History from './History';
@@ -16,7 +16,7 @@ import { TiDocumentText } from "react-icons/ti";
 import { FiSettings } from "react-icons/fi";
 import * as cloneDeep from "lodash/cloneDeep"
 
-import 'styles/dashboard.scss'
+import '../styles/dashboard.scss'
 
 
 
