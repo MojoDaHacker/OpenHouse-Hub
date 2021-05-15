@@ -4,7 +4,7 @@ import Two from '../components/Two';
 import Three from '../components/Three';
 import Four from '../components/Four';
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/LandingNavbar'
 import { Container } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 

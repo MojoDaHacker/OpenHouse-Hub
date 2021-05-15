@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Navbar, Nav, Modal, NavDropdown, Form, Button } from 'react-bootstrap'
 import LogInModal from './LogInModal'
 
@@ -26,7 +27,7 @@ export default function Bar() {
             <Nav.Link href="#link">Support</Nav.Link>
             <Nav.Link href="#link">Pricing</Nav.Link>
           </Nav>
-          <Nav.Link onClick={toggleModal}>Log In</Nav.Link>
+          <Nav.Link as={Link} href="/Login">Log In</Nav.Link>
         </Navbar.Collapse>
       </Navbar>
     </>

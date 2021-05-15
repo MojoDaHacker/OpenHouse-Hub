@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Modal, Form, Button } from 'react-bootstrap'
 
 export default function LogInModal(props) {
@@ -9,13 +9,13 @@ export default function LogInModal(props) {
   })
   const handleSubmit = e => {
     e.preventDefault()
-
   }
 
   return (
     <>
       <Modal {...props}>
         <Modal.Body>
+          <div id="firebaseLoginUi"></div>
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>Email</Form.Label>

@@ -1,4 +1,5 @@
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import Link from 'next/link'
 
 const One = props => {
 
@@ -12,29 +13,10 @@ const One = props => {
               having an information hub for everyone in the house to access.
             </p>
             <div className="text-center">
-              <Button>Sign Up Now!</Button>
+              <Button as={Link} href="/Register">Sign Up Now!</Button>
             </div>
           </div>
         </Col>
-        {/* <Col>
-          <Card>
-            <Card.Body>
-              <Form>
-                <Form.Group>
-                  <Form.Control type='text' placeholder="Username" />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Control type='password' placeholder="Password" />
-                </Form.Group>
-                <Form.Group controlId="formBasicCheckbox">
-                  <Form.Check type="checkbox" label="Remember Me" />
-                </Form.Group>
-                <Button type='submit'>Sign In</Button>
-                <Button>Sign Up</Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col> */}
       </Row>
     </Container>
   )

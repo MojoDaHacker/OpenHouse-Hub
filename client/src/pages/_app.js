@@ -9,20 +9,13 @@ function App({ Component, pageProps }) {
   const Auth = useContext(AuthContext)
   const Router = useRouter()
 
-  useEffect(() => {
-    if (!Auth.currentUser && Router.pathname !== "/") {
-      Router.push('/')
-    }
-  }, [])
-  //is user session is not found
-  //is user session is found
   return (
     <>
       <Head>
         <title>OpenHouse Hub</title>
       </Head>
-      {useFirebaseAuth() ? (
-        <Component user={Auth.currentUser} {...pageProps} />
+      {true ? (
+        <Component Auth={Auth} {...pageProps} />
       ) : (
         <div className="vh-100 d-flex justify-content-center align-items-center">
           <Spinner animation="grow"/>
