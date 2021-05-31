@@ -1,68 +1,54 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import { ThermometerHalf, DropletFill, Wind } from 'react-bootstrap-icons'
 
-export default function WeatherDisplay(props){
-  const [weatherData, setWeatherData] = useState({})
+export default function WeatherDisplay({ weatherData }){
+  console.log(weatherData)
 
-  useEffect(() => {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=Orlando&units=imperial&appid=3abd9c2df6a249e8abcf4f812de0a627`)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      setWeatherData({
-        name: data.name,
-        ...data.weather[0],
-        ...data.main
-      })
-    })
-    .catch(err => console.log(err))
-  }, [])
+  const formatWeatherDesc = desc => {
+    const words = desc.split(" ");
+    return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
+  }
 
 
-  return(
-    <>
-      <Container style={{borderRadius: "5px", height: "5.5rem"}} fluid>
-        <Row>
-          <Col xs="auto">
-            <Container fluid>
-              <Row>
-                <div className="mx-auto">
-                  <h6>{weatherData.name}</h6>
-                </div>
-              </Row>
-              <Row>
-                <img
-                  width={64}
-                  height={64}
-                  className="mr-3"
-                  src={`http://openweathermap.org/img/wn/${weatherData.icon}@2x.png`}
-                  alt="Generic placeholder"
-                />
-              </Row>
-            </Container>
-          </Col>
-          <Col xs="auto">
-            <Container>
-              <Row>
-                <Col xs="auto" className="p-1 mx-auto">
-                  <h3>{Math.round(weatherData.temp)}</h3>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="auto" className="p-1 mx-auto">
-                  <h6>{Math.round(weatherData.temp_min)}</h6>
-                </Col>
-                <Col xs="auto" className="p-1 mx-auto">
-                  <h6>{Math.round(weatherData.temp_max)}</h6>
-                </Col>
-              </Row>
-            </Container>
-            {/* <p>{weatherData.main}</p>
-            <p>{weatherData.description}</p>
-            <p>{weatherData.icon}</p> */}
-          </Col>
-        </Row>
-      </Container>
-    </>
+  return (
+    <Container className="text-center p-2">
+      <Row noGutters>
+        <Col>
+          <p className="text-left">{formatWeatherDesc(weatherData.weather[0].description)}</p>
+        </Col>
+      </Row>
+      <Row noGutters>
+        <Col>
+          <div>
+            <img
+              width={76}
+              src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+              alt="current weather logo"
+            />
+          </div>
+        </Col>
+        <Col className="my-auto">
+          <div>
+            <p>{Math.round(weatherData.main.temp)}</p>
+          </div>
+        </Col>
+      </Row>
+      <Row noGutters>
+        <Col className="d-flex justify-content-center">
+          <div>
+            <p className="m-0">{weatherData.name}</p>
+            <p className="m-0">{weatherData.weather[0].main}</p>
+          </div>
+        </Col>
+        <Col className="d-flex justify-content-center">
+          <div>
+            <p className="m-0 text-left"><ThermometerHalf size={12} />  <span>{Math.round(weatherData.main.temp_min)} - {Math.round(weatherData.main.temp_max)}</span></p>
+            <p className="m-0 text-left"><DropletFill size={12} />  <span>{Math.round(weatherData.main.humidity)}</span></p>
+            <p className="m-0 text-left"><Wind size={12} />  <span>{Math.round(weatherData.wind.speed)} m/s</span></p>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   )
 }

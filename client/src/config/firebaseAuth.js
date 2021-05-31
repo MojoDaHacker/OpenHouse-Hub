@@ -46,3 +46,4 @@ if(firebase.apps.length == 0){
 
 
 export default firebase
+export const Auth = firebase.auth()

@@ -2,6 +2,8 @@ import React from 'react';
 import WeatherDisplay from './WeatherDisplay';
 import QuickAnalytics from './QuickAnalytics';
 import { Container, Row, Col, Button, Card, Image, Badge } from 'react-bootstrap'
+import { Plus } from 'react-bootstrap-icons'
+import Link from 'next/link'
 
 export default class Home extends React.Component{
   constructor(props){
@@ -24,11 +26,12 @@ export default class Home extends React.Component{
       5 : "Fri",
       6 : "Sat"
     }
+    console.log(this.props.weatherData)
     return (
-      <Container className="d-flex flex-column h-100 p-0 py-3" fluid>
-        <Row>
-          <Col>
-            <Container>
+      <Container className="d-flex flex-column h-100 p-0 m-0" fluid>
+        <Row className="" noGutters>
+          <Col className="border-bottom">
+            <Container className="p-3">
               <Row>
                 <Col className="border-right border-primary">
                   {/* <Image className="border border-primary" style={{width: "4.5rem"}} src={profile} alt="User Profile Picture" roundedCircle/> */}
@@ -51,36 +54,36 @@ export default class Home extends React.Component{
             </Container>
           </Col>
         </Row>
-        <Row className="h-100 m-3">
+        <Row className="h-100 m-3" noGutters>
           <Col xs={9}>
-            <div className="border-bottom mb-3">
+            <div className="border-bottom text-center mb-3">
               <h1>Open House Sessions</h1>
             </div>
             <div>
-              <Button>Create a Session</Button>
+              <Link href="/session/252635"><Button>Create a Session<spam><Plus/></spam></Button></Link>
             </div>
-            {/* <Card>
-              <Card.Body>
-                <SessConsumer>
-                  {setSession => <SessionCreator {...setSession}/>}
-                </SessConsumer>
-              </Card.Body>
-            </Card> */}
           </Col>
-          <Col xs={3} className="border">
-            <Card className="h-100 overflow-hidden border-0">
-              <Card.Body className="p-0 overflow-auto position-relative">
-                <WeatherDisplay />
+          <Col xs={3} className="d-flex flex-column">
+            <Card className="flex-shrink-1 shadow-sm">
+              <Card.Body className="p-0 position-relative">
+                <WeatherDisplay weatherData={this.props.weatherData} />
               </Card.Body>
             </Card>
-            <Card className="h-100 overflow-hidden border-0">
-              <Card.Body className="p-0 overflow-auto position-relative">
-                <QuickAnalytics />
-              </Card.Body>
-            </Card>
+            <div className="p-4">
+              <QuickAnalytics />
+            </div>
           </Col>
         </Row>
       </Container>
     )
+  }
+}
+
+export async function getStatusProps(){
+
+  return {
+    props: {
+
+    }
   }
 }

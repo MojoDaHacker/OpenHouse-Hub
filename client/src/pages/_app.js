@@ -1,28 +1,23 @@
 import '../styles/globals.css'
-import useFirebaseAuth, { AuthContext } from '../hooks/useFirebaseAuth'
-import { useEffect, useContext } from 'react'
 import { Spinner } from 'react-bootstrap'
+import useFirebaseAuth, { AuthContext } from '../hooks/useFirebaseAuth'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
-function App({ Component, pageProps }) {
-  const Auth = useContext(AuthContext)
-  const Router = useRouter()
+export default function App({ Component, pageProps }) {
+  const Auth = useFirebaseAuth()
 
   return (
     <>
       <Head>
         <title>OpenHouse Hub</title>
       </Head>
-      {true ? (
-        <Component Auth={Auth} {...pageProps} />
-      ) : (
+      {Auth.checkingSession ? (
         <div className="vh-100 d-flex justify-content-center align-items-center">
           <Spinner animation="grow"/>
         </div>
+      ) : (
+        <Component Auth={Auth} {...pageProps} />
       )}
     </>
   )
 }
-
-export default App

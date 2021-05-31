@@ -14,11 +14,23 @@ a {
 * {
   box-sizing: border-box;
 }
+#desk{
+  background-image: url('/assets/img/desk.png');
+}
+#paper{
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
 
+  background-image: linear-gradient(
+    rgba(512,785,731,0.1) 0%, 
+  rgba(255,255,53,0.2) 8%),
+  url('https://www.memonotepad.com/img/paperfibers.png');
+}
 #LandingPageSVG {
   height: 100vh;
   background-position: center right, 0% 75%;
   background-size: 40%, 50%;
   background-repeat: no-repeat;
-  background-image: url('../../public/assets/illustrations/notebook.svg'), url('../../public/assets/illustrations/people2.png');
+  background-image: url('/assets/illustrations/notebook.svg'), url('/assets/illustrations/people2.png');
 }

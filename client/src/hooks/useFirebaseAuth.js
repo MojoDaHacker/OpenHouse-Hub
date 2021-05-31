@@ -1,59 +1,90 @@
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import firebase from '../lib/firebaseAuth'
-import { postIdTokenToSession } from '../lib/session'
+import firebase, { Auth } from '../config/firebaseAuth'
+import { postIdTokenToSession, verifyUserSessionCookie } from '../lib/firebase/AuthOperations'
 
-const firebaseAuth = firebase.auth()
-firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.NONE)
-export const AuthContext = React.createContext(firebaseAuth)
+export const AuthContext = React.createContext(Auth)
 
 const useFirebaseAuth = props => {
-  const [user, setUser] = useState(null)
-  const Router = useRouter();
-
+  const [user, setUser] = useState(Auth.currentUser)
+  const [checkingSession, setCheckingSession] = useState(true)
+  
   useEffect(() => {
-    // firebaseAuth.onAuthStateChanged(newUser => {
-    //   if(newUser){
-    //     setUser(newUser)
-    //     Router.push("/")
-    //   }
-    // })
+    Auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
+    if(user === null){
+      verifyUserSessionCookie()
+      .then(user => {
+        if(user.err){
+          console.log(user.err)
+          setUser(() => {
+            setCheckingSession(false)
+            return false
+          })
+        } else {
+          setUser(() => {
+            setCheckingSession(false)
+            return user
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        console.log("something went wrong!")
+        setUser(false)
+      })
+      .finally(() => setCheckingSession(false))
+    }
   }, [])
 
-  const createUser = ({email, password}) => (
-    firebaseAuth.createUserWithEmailAndPassword(email, password)
+  const loginUser = ({ email, password }) => {
+    Auth.signInWithEmailAndPassword(email, password)
     .then(({ user }) => {
-      // setUser(user)
       user.getIdToken().then(idToken => {
         // const csrfToken = getCookie('csrfToken')
         return postIdTokenToSession(idToken, 'abd7shdna2')
       })
+      setUser(user)
+      console.log(user)
+    })
+    .catch(err => err)
+  }
+  const createUser = ({ email, password }) => {
+    Auth.createUserWithEmailAndPassword(email, password)
+    .then(({ user }) => {
+      // setUser(user)
+      user.getIdToken().then(idToken => {
+        // const csrfToken = getCookie('csrfToken')
+        setUser(user)
+        return postIdTokenToSession(idToken, 'abd7shdna2')
+      })
+      setUser(user)
       console.log(user)
     })
     .catch(err => console.log(err))
-  )
-  const loginUser = ({email, password}) => (
-    firebaseAuth.signInWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      setUser(userCredential.user)
-      console.log(userCredential.user)
+  }
+  const logoutUser = ({ email, password }) => {
+    Auth.signInWithEmailAndPassword(email, password)
+    .then(({ user }) => {
+      setUser(user)
+      console.log(user)
     })
     .catch(err => err)
-  )
-  const logoutUser = ({email, password}) => (
-    firebaseAuth.signInWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      setUser(userCredential.user)
-      console.log(userCredential.user)
+  }
+  const deleteUser = ({ email, password }) => {
+    Auth.signInWithEmailAndPassword(email, password)
+    .then(({ user }) => {
+      setUser(user)
+      console.log(user)
     })
     .catch(err => err)
-  )
+  }  
 
   return {
     user,
+    checkingSession,
     createUser,
     loginUser,
     logoutUser,
+    deleteUser,
   }
 }
 
