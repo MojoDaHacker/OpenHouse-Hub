@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import EndSession from '../Components/EndSessionButton'
-import SetupModal from '../Components/sessionSetupModal'
-import EditHostModal from '../Components/EditHostModal'
+import EndSession from '../components/EndSessionButton'
+import SetupModal from '../components/sessionSetupModal'
+import EditHostModal from '../components/EditHostModal'
 import {Container, Row, Col, Form, Card, Button, ListGroup, Image} from 'react-bootstrap'
 import {Check, X, EnvelopeFill, TelephoneFill, Building, PersonCircle, PencilFill} from 'react-bootstrap-icons'
 
@@ -64,7 +64,7 @@ const Session = props => {
   
   return (
     <div className="vh-100" id="desk">
-      <SetupModal edit={[edit, editHost]} changeHost={[host, changeHostInfo]} changeAvatar={changeAvatar} />
+      {/* <SetupModal edit={[edit, editHost]} changeHost={[host, changeHostInfo]} changeAvatar={changeAvatar} /> */}
       <EditHostModal editKit={[edit, editHost]} changeHost={[host, changeHostInfo]} changeAvatar={changeAvatar} />
       <Container className="h-100 py-4">
         <Row className="h-100 mx-3">

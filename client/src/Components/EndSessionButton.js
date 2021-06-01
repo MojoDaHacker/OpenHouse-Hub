@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {Button, Modal} from 'react-bootstrap'
-import styled from 'styled-components'
 
 const EndSessionButton = props => {
   const [showModal, changeModal] = useState(false);
@@ -24,19 +23,6 @@ const EndSessionButton = props => {
     .catch(console.error)
   }
 
-  const Border = styled.div.attrs(props => ({
-    className: props.className
-  }))`
-    border-image: radial-gradient(red, yellow, green);
-    border-image-slice: 1;
-  `
-  const StyledButton = styled(Button).attrs(props => ({
-    className: props.className,
-    onClick: props.onClick
-  }))`
-    background-image: linear-gradient(#f02b2b, #8f1735);
-    font-weight: bold;
-  `
   if (props.numVisitors == 0) {
     return null
   }
@@ -59,7 +45,6 @@ const EndSessionButton = props => {
           </div>
         </Modal.Body>
       </Modal>
-      <StyledButton onClick={() => changeModal(true)} className="border-0">End Session</StyledButton>
     </>
   )
 }

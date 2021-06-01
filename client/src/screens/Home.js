@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import Chart from '../Components/Chart';
+import Chart from '../components/Chart';
 import {Container, Row, Col, Button, Media, Card, Image,
   ListGroup, Badge} from 'react-bootstrap'
-import {IconContext} from 'react-icons'
-import {FcHome} from 'react-icons/fc'
-import {BsArrowUp, BsArrowDown} from 'react-icons/bs'
-import SessionCreator from '../Components/SessionCreator'
+import SessionCreator from '../components/SessionCreator'
 import profile from '../assets/profile.jpg'
 import {SessConsumer} from '../contexts/sessContext';
 
@@ -46,7 +43,7 @@ export default class Home extends React.Component{
                       <div className="d-flex h-100">
                         <div className="my-auto text-center">
                           <Badge variant={notifications.length > 0 ? "warning" : "primary"}>{notifications.length}</Badge>
-                          <Button className="bg-transparent border-0 text-primary" size="sm"><BsArrowDown /></Button>
+                          <Button className="bg-transparent border-0 text-primary" size="sm">Arrow Icon</Button>
                         </div>
                         <Card className="w-100 h-100 shadow-sm">
                           <Card.Body>
@@ -177,9 +174,6 @@ function QuickAnalytics(props){
   return(
     <>
       <Media className="flex-row-reverse" style={{height: "5.5rem"}}>
-        <IconContext.Provider value={{size: "3rem", style:{fontWeight: "200"}, className: "p-1 rounded-circle align-self-center"}}>
-          <FcHome />
-        </IconContext.Provider>
         <Media.Body className="pr-3 text-right">
           {quickAnalysis.length > 0 ?
           quickAnalysis.map(val => (

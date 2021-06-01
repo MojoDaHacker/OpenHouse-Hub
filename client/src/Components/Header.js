@@ -1,8 +1,5 @@
 import React from 'react';
-import {Col} from 'react-bootstrap';
-import { FaUserTie } from 'react-icons/fa';
-import { AiOutlineContacts } from "react-icons/ai";
-import { IconContext } from 'react-icons';
+import { Col } from 'react-bootstrap';
 
 
 const Header = props => (
@@ -14,10 +11,7 @@ const Header = props => (
     </Col>
     <Col className="d-flex justify-content-end">
       <div>
-        <IconContext.Provider value={{ size: "1.5rem"}}>
-          <AiOutlineContacts />
-          <FaUserTie />
-        </IconContext.Provider>
+        Icons
       </div>
     </Col>
   </>

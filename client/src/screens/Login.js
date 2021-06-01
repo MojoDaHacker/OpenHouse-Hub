@@ -3,7 +3,7 @@ import {Form, Button} from 'react-bootstrap'
 import {Formik} from 'formik'
 import * as Yup from 'yup'
 import Cookies from 'js-cookie'
-import {Header} from 'homePage'
+import {Header} from '../homePage'
 import {AuthContext} from '../contexts/authContext'
 
 
