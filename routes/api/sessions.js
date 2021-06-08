@@ -6,10 +6,6 @@ const fs = require("fs");
 // import helpers
 const {addVisitor, downloadCSV} = require("../../helpers/addVisitors")
 
-
-// Load vistor/lead model
-const User = require("../../models/User");
-
 // @desc create or append new CSV file with new visitors
 router.post("/addVisitor", (req, res) => {
   if(addVisitor(req.body, req.session.id)) res.end()

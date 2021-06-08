@@ -9,6 +9,8 @@ const VisitorSignIn = props => {
   const [input, setInput] = useState("");
   const [appreciate, setAppreciation] = useState(false);
 
+  let visitors = props.visitorsState[0]
+
   useEffect(() => {
     if (currentForm > 2) {
       props.visitorsState[1](visitors => [...visitors, visitor])

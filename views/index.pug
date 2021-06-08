@@ -1,0 +1,19 @@
+doctype html
+html(lang en)
+  head
+    link(rel="stylesheet", href="/bootstrap/css/bootstrap.min.css")
+    script(language="javascript" src="/bootstrap/js/bootstrap.min.js") 
+  body
+    div(class="d-flex flex-column min-vh-100 vh-100")
+      div
+        include header.pug
+      div(class="h-100")
+        case main
+          when "login"
+            include login.pug
+          when "register"
+            include register.pug
+          when "/"
+            include landing.pug
+      div
+        include footer.pug

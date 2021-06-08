@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import { getWeatherData } from '../lib/getProps'
 import { ThermometerHalf, DropletFill, Wind } from 'react-bootstrap-icons'
 
-export default function WeatherDisplay({ weatherData }){
+export default async function WeatherDisplay(){
+  const weatherData = await getWeatherData()
+
   console.log(weatherData)
 
   const formatWeatherDesc = desc => {

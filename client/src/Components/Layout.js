@@ -1,5 +1,3 @@
-import Head from 'next/head'
-import Link from 'next/Link'
 import { Container, Row, Col} from 'react-bootstrap'
 import SideNavbar from './SideNavbar'
 

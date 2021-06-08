@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "yarn start --prefix client",
+    "landing": "yarn start --prefix landing",
+    "dev": "concurrently \"yarn server\" \"yarn run --cwd=landing start\"",
     "start": "node server.js",
     "server": "nodemon server.js"
   },
@@ -15,7 +16,10 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "bootstrap": "^5.0.1",
     "concurrently": "^5.2.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^2.4.1",
     "cors": "^2.8.5",
     "csv-writer": "^1.6.0",
     "express": "^4.17.1",
@@ -24,11 +28,14 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.19",
     "mongoose": "^5.9.26",
+    "multer": "^1.4.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "validator": "^13.1.1"
+    "pug": "^3.0.2",
+    "validator": "^13.1.1",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
