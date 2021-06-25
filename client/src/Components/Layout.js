@@ -4,17 +4,16 @@ import SideNavbar from './SideNavbar'
 
 
 export default function Layout(props) {
-  
   return (
-    <Container className="p-0" fluid>
-      <Row noGutters>
-        <Col xs='auto' className="border vh-100">
-          <SideNavbar />
-        </Col>
-        <Col>
-          {props.children}
-        </Col>
-      </Row>
-    </Container>
+    <div className="w-100">
+      <SideNavbar />
+      <Container fluid>
+        <Row noGutters>
+          <Col>
+            {props.children}
+          </Col>
+        </Row>
+      </Container>
+    </div>
   )
 }

@@ -1,27 +1,19 @@
 const path = require("path");
 const fs = require("fs");
-const createCsvStringifier = require('csv-writer').createObjectCsvStringifier;
 
-//create file to hold temporary data of visitors from open house
+const { Session } = require("../models/Session")
+const { Visitor } = require("../models/Visitor")
 
-const addVisitor = (visitor, sessionID) => {
-  var appendHead;
 
-  if (!fs.existsSync(path.join("sessionCSVs", sessionID + '.csv'))) {
-    appendHead = true;
-  }
-  const csvStringifier = createCsvStringifier({
-    header: Object.keys(visitor).map(val => ({id: val , title: val})),
-  });
-  
-  fs.open(path.join("sessionCSVs", sessionID + ".csv"), "a", (err, fd) => {
-    if (err) console.log("Error: " + err)
-    if (appendHead) fs.writeSync(fd, csvStringifier.getHeaderString())
-    fs.writeSync(fd, csvStringifier.stringifyRecords([visitor]))
-    fs.closeSync(fd)
+const addVisitor = (visitor, session) => {
+  console.log(visitor, session.passport)
+  return Session.findOne()
+  .byLinkedUser(session.passport.user)
+  .then(session => {
+    const newVisitor = new Visitor(visitor)
+    session.visitors.push(newVisitor)
+    return session.save()
   })
-
-  return 1
 };
 
 

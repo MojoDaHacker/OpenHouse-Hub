@@ -1,64 +1,36 @@
 import React from 'react';
 import Layout from './components/Layout';
 import Session from './screens/Session';
-// import HomePage from './screens/LandingPage';
-// import Login from './screens/Login';
-// import Register from './screens/Register';
+import Settings from './screens/Settings';
 import Home from './screens/Home';
+import { Spinner } from 'react-bootstrap'
 import { Switch, Route } from "react-router-dom";
-import {SessProvider, SessConsumer} from './contexts/sessContext';
-import {AuthProvider, AuthConsumer} from './contexts/authContext';
+import useUser from './hooks/useUser'
 
-export default class App extends React.Component {
-  constructor(){
-    super();
-    this.state = {
-      isAuthenticated : false
-    }
-    this.authenticate = this.authenticate.bind(this);
-  }
+export default function App(props){
+  const user = useUser()
 
-  authenticate(){
-    this.state.isAuthenticated ? this.setState({isAuthenticated: false}) : this.setState({isAuthenticated: true})
-  }
-
-  render(){
+  if(!user){
     return (
-      <AuthProvider>
-        <AuthConsumer>
-          {({authKit}) => {
-            return (
-              <Switch>
-                {authKit.auth.isAuthenticated ? (
-                  <SessProvider>
-                    <SessConsumer>
-                      {({session}) => {
-                        return session.sessInitialized ? (
-                          <Route path="/session/:id"><Session /></Route>
-                        ) : (
-                          <Layout>
-                            <Home authenticate={[this.state.isAuthenticated, this.authenticate]}/>
-                          </Layout>
-                        )
-                      }}
-                    </SessConsumer>
-                  </SessProvider>
-                ) : (
-                  <>
-                    {/* <Route path="/register" render={({history}) => (
-                      <Register history={history} authenticate={this.authenticate}/>
-                      )}/>
-                    <Route path="/login" render={({history}) => (
-                      <Login history={history} authenticate={this.authenticate}/>
-                      )}/>
-                    <Route exact path="/"><HomePage /></Route> */}
-                  </>
-                )}
-              </Switch>
-            )
-          }}
-        </AuthConsumer>
-      </AuthProvider>
-    );
-  } 
+      <div className="vh-100 d-flex justify-content-center align-items-center">
+        <Spinner animation="grow" />
+      </div>
+    )
+  } else {
+    return (
+      <Switch>
+        <Route path="/session/:id">
+          <Session user={user} />
+        </Route>
+        <Layout>
+          <Route path="/settings">
+            <Settings user={user}/>
+          </Route>
+          <Route path="/">
+            <Home user={user}/>
+          </Route>
+        </Layout>
+      </Switch>
+    )
+  }
 }

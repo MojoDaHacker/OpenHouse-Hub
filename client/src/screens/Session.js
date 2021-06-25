@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import SessionAdsAndInfo from '../components/SessionAdsAndInfo'
+import SessionCreationModal from '../components/SessionCreationModal'
 import ProfilePic from '../assets/img/profile.jpg'
-// import SetupModal from '../../Components/sessionSetupModal'
-// import EditHostModal from '../../Components/EditHostModal'
+import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form, Card, Button, ListGroup, Image, ButtonGroup } from 'react-bootstrap'
 import { Check, X, EnvelopeFill, TelephoneFill, Building, PersonCircle, PencilFill, CircleFill, InfoCircle } from 'react-bootstrap-icons'
 import VisitorSignIn from '../components/VisitorSignIn'
 
 const Session = props => {
   const [visitors, updateVisitors] = useState([]);
-  const hostIcons = [<PersonCircle/>, <EnvelopeFill/>, <TelephoneFill/>, <Building/>];
   
-  const [host, changeHostInfo] = useState({})
-  const [hostAvatar, changeAvatar] = useState(null)
-  const [edit, editHost] = useState(false)
-
-  const saveVisitor = visitor => {
-    console.log(visitor)
-    const opt = {
+  const saveVisitor = (visitor, cb) => {
+    const init = {
       method: 'POST',
-      mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -27,24 +20,26 @@ const Session = props => {
     }
 
     //send vistor to server to be saved
-    fetch("/api/sessions/addVisitor", opt)
-    .then(res => console.log(res.status))
-  }
-  const endSession = () => {
-
+    return fetch("/api/sessions/addVisitor", init)
+    .then(res => res.json())
+    .then(data => {
+      if(data.operationSuccessful) {
+        updateVisitors(visitors => [...visitors, visitor])
+      }
+    })
+    .catch(err => err)
   }
   
   return (
     <div className="vh-100" id="desk">
-      {/* <SetupModal edit={[edit, editHost]} changeHost={[host, changeHostInfo]} changeAvatar={changeAvatar} /> */}
-      {/* <EditHostModal editKit={[edit, editHost]} changeHost={[host, changeHostInfo]} changeAvatar={changeAvatar} /> */}
+      <SessionCreationModal show={true}/>
       <Container className="h-100 py-4">
         <Row className="h-100 mx-3">
           <Col xs="auto" className="mb-3 mt-auto">
             <ButtonGroup vertical toggle={false} size="sm">
               <Button variant="light"><PencilFill /></Button>
               <Button variant="light"><InfoCircle /></Button>
-              <Button variant="light" className="text-danger" onClick={endSession}><CircleFill /></Button>
+              <Button as={Link} to="/" variant="light" className="text-danger"><CircleFill /></Button>
             </ButtonGroup>
           </Col>
           <Col className="h-100 d-flex flex-column">
@@ -56,7 +51,7 @@ const Session = props => {
                   </div>
                   <div className="ml-3">
                     <div className="d-inline-block">
-                      <p><PersonCircle />Realtor Name</p>
+                      <p><PersonCircle />{props.user.name}</p>
                       <p><TelephoneFill />Realtor Number</p>
                       <p><EnvelopeFill />Realtor Email</p>
                     </div>
@@ -84,14 +79,14 @@ const Session = props => {
               <div className="overflow-auto">
                 {visitors.map((val, i) => (
                   <ListGroup className="p-2 m-0" key={i} as={Row} horizontal>
-                    <ListGroup.Item as={Col} xs={2} className="bg-transparent border-0">{val.Realtor ? <Check /> : <X />}</ListGroup.Item>
-                    <ListGroup.Item as={Col} xs={5} className="bg-transparent border-0 flex-grow-1">{val.Name}</ListGroup.Item>
-                    <ListGroup.Item as={Col} xs={5} className="flex-grow-1 bg-transparent border-0">{val.Phone}</ListGroup.Item>
+                    <ListGroup.Item as={Col} xs={2} className="bg-transparent border-0">{val.realtor ? <Check /> : <X />}</ListGroup.Item>
+                    <ListGroup.Item as={Col} xs={5} className="bg-transparent border-0 flex-grow-1">{val.name}</ListGroup.Item>
+                    <ListGroup.Item as={Col} xs={5} className="flex-grow-1 bg-transparent border-0">{val.phone}</ListGroup.Item>
                   </ListGroup>
                 ))}
               </div>
               <div className="my-auto p-2">
-                <VisitorSignIn visitorsState={[visitors, updateVisitors]}/>
+                <VisitorSignIn saveVisitor={saveVisitor}/>
               </div>
             </div>
           </Col>

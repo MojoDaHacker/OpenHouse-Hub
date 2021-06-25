@@ -1,8 +1,13 @@
 const express = require("express");
-const path = require("path");
-const mongoose = require("mongoose")
 const router = express.Router();
 
-router.post("/getUser", (req, res, next) => {
+const { User } = require("../../models/User")
 
+router.get("/getUser", (req, res, next) => {
+  const user_id = req.session.passport.user
+  User.findById(user_id, '-password')
+  .then(user => res.send(user))
+  .catch(next)
 })
+
+module.exports = router

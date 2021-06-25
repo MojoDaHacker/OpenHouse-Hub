@@ -36,14 +36,14 @@ app.use(session({
   resave: false
 }));
 // app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-// app.use(express.static(path.join(__dirname, 'landing', 'build')));
+app.use(express.json());
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
 
+const users = require("./routes/api/users");
 const activeSession = require("./routes/api/sessions");
 const submissions = require("./routes/submissions/users");
-const { SIGILL } = require("constants");
 
+app.use("/api", users);
 app.use("/api/sessions", activeSession);
 app.use("/submissions", submissions);
 
@@ -51,6 +51,7 @@ app.get('/', function (req, res) {
   store.get(req.session.id, (err, session) => {
     if(!err){
       if(session){
+        app.use(express.static(path.join(__dirname, 'client', 'build')));
         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
       }
       else{
@@ -78,6 +79,7 @@ app.listen(port, () => console.log(`Server up and running on port ${port} !`));
 
 const handleProcessTermination = () => {
   mongoose.disconnect()
+  process.exit(1)
 }
 
 process.on('SIGTERM', handleProcessTermination)
