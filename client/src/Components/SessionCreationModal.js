@@ -79,9 +79,14 @@ const SessionCreationModal = props => {
   }
   const handleSubmission = () => {
     const init = {
-      method: "post",
-      body : formState
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify(formState)
     }
+
+    console.log(init.body)
 
     fetch("/api/sessions/createSession", init)
     .then(res => res.json())
@@ -89,7 +94,7 @@ const SessionCreationModal = props => {
       if(data.operationSuccessful){
         handleModalVisibility()
       } else {
-
+        console.log(data)
       }
     })
   }

@@ -13,5 +13,12 @@ export default function useUser() {
     .then(user => setUser(user))
   }
 
-  return user 
+  const updateUser = user => {
+    setUser(user)
+  }
+
+  return {
+    user,
+    updateUser
+  } 
 }

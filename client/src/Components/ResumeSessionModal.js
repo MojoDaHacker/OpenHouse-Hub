@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Modal, Button } from 'react-bootstrap'
 
 const ResumeSessionModal = props => {
-  const [show, setModal] = useState(false)
+  const [show, setModal] = useState(props.show)
 
   const handleClose = () => {
     setModal(!show)

@@ -32,9 +32,15 @@ const UserSchema = new Schema({
     default: false,
     required: true
   },
-  activeSession : SessionSchema,
-  completedSessions: [SessionSchema],
-  scheduledSessions: [SessionSchema],
+  activeSession : Object,
+  completedSessions : {
+    type: [SessionSchema],
+    default: []
+  },
+  scheduledSessions : {
+    type: [SessionSchema],
+    default: []
+  },
   profile: {
     type: UserProfileSchema,
     default: {}

@@ -8,7 +8,7 @@ import { Switch, Route } from "react-router-dom";
 import useUser from './hooks/useUser'
 
 export default function App(props){
-  const user = useUser()
+  const { user, updateUser } = useUser()
 
   if(!user){
     return (
@@ -20,14 +20,14 @@ export default function App(props){
     return (
       <Switch>
         <Route path="/session/:id">
-          <Session user={user} />
+          <Session user={user} updateUser={updateUser}/>
         </Route>
         <Layout>
           <Route path="/settings">
-            <Settings user={user}/>
+            <Settings user={user} updateUser={updateUser}/>
           </Route>
           <Route path="/">
-            <Home user={user}/>
+            <Home user={user} updateUser={updateUser}/>
           </Route>
         </Layout>
       </Switch>

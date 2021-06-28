@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react'
 import SessionAdsAndInfo from '../components/SessionAdsAndInfo'
 import SessionCreationModal from '../components/SessionCreationModal'
 import ProfilePic from '../assets/img/profile.jpg'
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Form, Card, Button, ListGroup, Image, ButtonGroup } from 'react-bootstrap'
-import { Check, X, EnvelopeFill, TelephoneFill, Building, PersonCircle, PencilFill, CircleFill, InfoCircle } from 'react-bootstrap-icons'
+import { useHistory } from 'react-router-dom';
+import { Container, Row, Col, Card, Button, ListGroup, Image, ButtonGroup } from 'react-bootstrap'
+import { Check, X, EnvelopeFill, TelephoneFill, PersonCircle, PencilFill, CircleFill, InfoCircle } from 'react-bootstrap-icons'
 import VisitorSignIn from '../components/VisitorSignIn'
 
 const Session = props => {
-  const [visitors, updateVisitors] = useState([]);
+  const [visitors, updateVisitors] = useState(
+    props.user.activeSession ? props.user.activeSession.visitors : []
+  );
+  const history = useHistory()
   
   const saveVisitor = (visitor, cb) => {
     const init = {
@@ -29,17 +32,29 @@ const Session = props => {
     })
     .catch(err => err)
   }
-  
+  const endSession = () => {
+    fetch("/api/sessions/endSession")
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if(data.operationSuccessful){
+        props.updateUser(data.user)
+        history.push("/")
+      }
+    })
+  }
+
+
   return (
     <div className="vh-100" id="desk">
-      <SessionCreationModal show={true}/>
+      <SessionCreationModal show={!props.user.hasActiveSession}/>
       <Container className="h-100 py-4">
         <Row className="h-100 mx-3">
           <Col xs="auto" className="mb-3 mt-auto">
             <ButtonGroup vertical toggle={false} size="sm">
               <Button variant="light"><PencilFill /></Button>
               <Button variant="light"><InfoCircle /></Button>
-              <Button as={Link} to="/" variant="light" className="text-danger"><CircleFill /></Button>
+              <Button onClick={endSession} variant="light" className="text-danger"><CircleFill /></Button>
             </ButtonGroup>
           </Col>
           <Col className="h-100 d-flex flex-column">

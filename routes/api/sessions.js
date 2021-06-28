@@ -45,26 +45,23 @@ router.get("/endSessionCSV", (req, res) => {
  */
 router.post("/createSession", (req, res) => {
   const userId = req.session.passport.user;
-
   User.findById(userId)
   .then(user => {
     if(user){
       const newSession = new Session({
         linkedUser: userId,
-        address: "1651 SW 127TH AVE",
-        address2: "APT 207",
-        city: "PEMBROKE PINES",
-        state: "FL",
-        zip: 33027
+        ...req.body
       })
       newSession.save()
       .then(session => {
         user.hasActiveSession = true
         user.activeSession = session
+        user.markModified('activeSession')
+        
         user.save()
-        .then(() =>
+        .then(user => {
           res.send({ operationSuccessful : true, session })
-        )
+        })
         .catch(err => res.send({
           operationSuccessful: false,
           message: err
@@ -80,10 +77,29 @@ router.post("/createSession", (req, res) => {
   })
 });
 
-router.post("/endSession", (req, res) => {
+router.get("/endSession", (req, res) => {
   const userId = req.session.passport.user;
-
   User.findById(userId)
+  .then(user => {
+    if(user){
+      user.completedSessions.push(user.activeSession)
+      user.activeSession = {};
+      user.hasActiveSession = false;
+      user.markModified('activeSession')
+
+      user.save()
+      .then(() => res.send({ operationSuccessful : true, user : user }))
+      .catch(err => {
+        console.log(err)
+        res.send({
+          operationSuccessful: false,
+          message: err
+        })
+      })
+    } else {
+      res.send({operationSuccessful: false, message: "User not found"})
+    }
+  })
 })
 
 

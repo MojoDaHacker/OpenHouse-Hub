@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Row, Col, Spinner, Card} from 'react-bootstrap'
-import { ThermometerHalf, DropletFill, Wind } from 'react-bootstrap-icons'
+import { motion } from 'framer-motion'
+import { Container, Row, Col, Spinner, Card, Button} from 'react-bootstrap'
+import { ThermometerHalf, DropletFill, Wind, ChevronDoubleDown } from 'react-bootstrap-icons'
 
 export default function WeatherDisplay(){
   const [weatherData, setWeather] = useState(null)
@@ -25,7 +26,8 @@ export default function WeatherDisplay(){
     )
   } else {
     return (
-      <Card className="bg-dark text-light rounded-circle flex-shrink-1 shadow-lg" style={{ width: '12rem', height: '12rem' }} >
+      <>
+      <Card className="bg-dark mx-auto text-light rounded-circle flex-shrink-1 shadow-lg" style={{ width: '12rem', height: '12rem' }} >
         <Card.Body className="p-0 position-relative" >
           <Container className="text-center">
             <Row noGutters>
@@ -57,6 +59,13 @@ export default function WeatherDisplay(){
           </Container>
         </Card.Body>
       </Card>
+      <div className="text-center">
+        <Button as={motion.button} animate={{ y : 10 }} transition={{ yoyo: Infinity, duration: 1 }} variant="link">
+          <ChevronDoubleDown size={24} />
+        </Button>
+      </div>
+
+      </>
     )
   }
 

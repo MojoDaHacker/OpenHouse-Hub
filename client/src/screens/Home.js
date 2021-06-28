@@ -2,8 +2,8 @@ import React from 'react';
 import WeatherDisplay from '../components/WeatherDisplay';
 import ResumeSessionModal from '../components/ResumeSessionModal';
 import Illustration1 from '../assets/illustrations/teamwork.svg'
-import { Container, Row, Col, Button, Card, Image, Badge, ListGroup } from 'react-bootstrap'
-import { Plus } from 'react-bootstrap-icons'
+import { Container, Row, Col, Button, Image, ListGroup } from 'react-bootstrap'
+import { Plus, Window, Download, XLg, PeopleFill, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 
 export default class Home extends React.Component{
@@ -28,30 +28,49 @@ export default class Home extends React.Component{
       5 : "Fri",
       6 : "Sat"
     }
+    console.log(user)
     return (
-      <Container className="d-flex flex-column vh-100" fluid>
+      <Container className="d-flex flex-column vh-100">
         <ResumeSessionModal show={user.hasActiveSession} />
         <Row className="h-100 m-3">
           <Col className="d-flex flex-column">
-            <div className="border-bottom text-center mb-3">
+            <div className="border-bottom text-left mb-3">
               <h1>Open House Sessions</h1>
             </div>
-            <div className="text-center h-100">
+            <div className="h-100">
               {user.completedSessions.length < 1 ? (
-                <div className="mt-3">
+                <div className="mt-3 text-center">
                   <p className="mx-auto w-75">
                     You don't have any sessions. Start one now or schedule one for later and give your visitors a new open house experience.
                   </p>
                   <Image src={Illustration1} width="50%"/>
                 </div>
               ) : (
-                <ListGroup>
-                  {this.state.pastSessions.map(session => (
-                    <ListGroup.Item>{session}</ListGroup.Item>
+                <ListGroup variant="flush">
+                  {user.completedSessions.map((session, i) => (
+                    <ListGroup.Item className="border-0" key={session+i}>
+                      <div className="d-flex pb-2 border-bottom">
+                        <div className="flex-grow-1">
+                          <span className="">{session.address}</span>
+                          <div>
+                            <span className="m-1 text-muted fst-italic small">{new Date(session.date).toDateString()}</span>
+                          </div>
+                        </div>
+                        <div>
+                          <PeopleFill size={18}/><span className="m-3">{session.visitors.length}</span>
+                          <HandThumbsUpFill size={18}/><span className="m-3">{session.visitors.length}</span>
+                        </div>
+                        <div>
+                          <Button as={Link} variant="link" to="/"><Window size={18} /></Button>
+                          <Button as={Link} variant="link" to="/"><Download size={18} /></Button>
+                          <Button as={Link} variant="link" to="/"><XLg size={18} /></Button>
+                        </div>
+                      </div>
+                    </ListGroup.Item>
                   ))}
                 </ListGroup>
               )}
-              <div>
+              <div className="text-center">
                 <Button className="m-3" as={Link} to="/session/252635">Create a Session<span><Plus/></span></Button>
               </div>
             </div>
