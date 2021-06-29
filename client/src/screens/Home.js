@@ -17,18 +17,7 @@ export default class Home extends React.Component{
   
   render(){
     const { user } = this.props
-    const notifications = this.state.notifications
-    var forecasts = this.props.forecastData && this.props.forecastData.list
-    const days = {
-      0 : "Sun",
-      1 : "Mon",
-      2 : "Tue",
-      3 : "Wed",
-      4 : "Thur",
-      5 : "Fri",
-      6 : "Sat"
-    }
-    console.log(user)
+  
     return (
       <Container className="d-flex flex-column vh-100">
         <ResumeSessionModal show={user.hasActiveSession} />
@@ -49,23 +38,23 @@ export default class Home extends React.Component{
                 <ListGroup variant="flush">
                   {user.completedSessions.map((session, i) => (
                     <ListGroup.Item className="border-0" key={session+i}>
-                      <div className="d-flex pb-2 border-bottom">
-                        <div className="flex-grow-1">
+                      <Row className="d-flex pb-2 border-bottom">
+                        <Col className="flex-grow-1">
                           <span className="">{session.address}</span>
                           <div>
                             <span className="m-1 text-muted fst-italic small">{new Date(session.date).toDateString()}</span>
                           </div>
-                        </div>
-                        <div>
+                        </Col>
+                        <Col className="flex-grow-1">
                           <PeopleFill size={18}/><span className="m-3">{session.visitors.length}</span>
                           <HandThumbsUpFill size={18}/><span className="m-3">{session.visitors.length}</span>
-                        </div>
-                        <div>
+                        </Col>
+                        <Col xs="auto">
                           <Button as={Link} variant="link" to="/"><Window size={18} /></Button>
                           <Button as={Link} variant="link" to="/"><Download size={18} /></Button>
                           <Button as={Link} variant="link" to="/"><XLg size={18} /></Button>
-                        </div>
-                      </div>
+                        </Col>
+                      </Row>
                     </ListGroup.Item>
                   ))}
                 </ListGroup>

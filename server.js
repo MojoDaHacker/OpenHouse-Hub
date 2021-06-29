@@ -30,7 +30,9 @@ app.set('view engine', 'pug')
 app.use(cors());
 app.use(session({
   secret: "terces12345",
-  maxAge: 1000 * 60 * 60 * 24 * 7,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
   store: store,
   saveUninitialized: false,
   resave: false
