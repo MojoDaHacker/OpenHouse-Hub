@@ -15,11 +15,31 @@ export default function WeatherDisplay(){
   }, [])
   const variants = {
     expanded: {
-      // y: 50
+      borderRadius: '2rem',
+      clipPath: "circle(150% at 50% 20%)",
+      transition: {
+        type: "spring",
+        stiffness: 20,
+        restDelta: 2
+      }
     },
     unexpanded: {
-      // y: 100
-    }
+      borderRadius: '2rem',
+      clipPath: "circle(23% at 50% 20%)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40
+      }
+    },
+    // displayBody:{
+    //   position: 'absolute',
+    //   top: 0,
+    //   left: 0,
+    //   width: '100%',
+    //   height: '100%',
+    //   padding: 0
+    // }
   }
   const handleClick = () => setExpanded(!expanded)
   const formatWeatherDesc = desc => {
@@ -36,10 +56,10 @@ export default function WeatherDisplay(){
     )
   } else {
     return (
-      <>
-        <Card as={motion.div} animate="expanded" initial="unexpanded" variants={variants}
-          className={`${expanded ? 'weatherDisplayWidgetExpanded' : 'weatherDisplayWidget'} bg-dark mx-auto text-light shadow-lg`}>
-          <Card.Body className={`${expanded ? null : 'displayBody'}`}>
+      <div style={{filter: 'drop-shadow(0.35rem 0.35rem 0.4rem rgba(0, 0, 0, 0.5))'}}>
+        <Card as={motion.div} initial={false} animate={expanded ? 'expanded': 'unexpanded'} 
+          variants={variants} className="bg-dark text-light">
+          <Card.Body>
             <Container className="text-center d-flex flex-column justify-content-center h-100">
               <Row noGutters>
                 <Col>
@@ -68,7 +88,6 @@ export default function WeatherDisplay(){
                 </Col>
               </Row>
             </Container>
-            {expanded ? (
               <ListGroup>
                 <ListGroup.Item className="bg-transparent text-light border-0">Hello!</ListGroup.Item>
                 <ListGroup.Item className="bg-transparent text-light border-0">Hello!</ListGroup.Item>
@@ -79,7 +98,6 @@ export default function WeatherDisplay(){
                 <ListGroup.Item className="bg-transparent text-light border-0">Hello!</ListGroup.Item>
                 <ListGroup.Item className="bg-transparent text-light border-0">Hello!</ListGroup.Item>
               </ListGroup>
-            ) : null}
           </Card.Body>
         </Card>
         <div className="text-center">
@@ -87,7 +105,7 @@ export default function WeatherDisplay(){
             <ChevronDoubleDown size={24} />
           </Button>
         </div>
-      </>
+      </div>
     )
   }
 
