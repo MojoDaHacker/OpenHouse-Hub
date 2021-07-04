@@ -23,12 +23,14 @@ export default function App(props){
           <Session user={user} updateUser={updateUser}/>
         </Route>
         <Layout>
-          <Route path="/settings">
-            <Settings user={user} updateUser={updateUser}/>
-          </Route>
-          <Route path="/">
-            <Home user={user} updateUser={updateUser}/>
-          </Route>
+          <Switch>
+            <Route path="/settings">
+              <Settings user={user} updateUser={updateUser}/>
+            </Route>
+            <Route path="/">
+              <Home user={user} updateUser={updateUser}/>
+            </Route>
+          </Switch>
         </Layout>
       </Switch>
     )
