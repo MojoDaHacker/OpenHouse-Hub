@@ -75,7 +75,7 @@ const AccountSettings = ({ account }) => (
       <p>Connected Accounts</p>
     </div>
     <div>
-      <Button variant="danger" >Delete Account</Button>
+      <Button variant="danger">Delete Account</Button>
     </div>
   </>
 )
