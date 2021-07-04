@@ -480,6 +480,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
-#mongo config & keys
-config/keys.js

@@ -5,7 +5,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session)
 const path = require('path')
 const mongoose = require('mongoose')
-// const keys = require('./config/keys')
+const keys = require('./config/keys')
 
 mongoose.connect(
   `mongodb+srv://MattAdmin:${keys.module.MatthewMcKenzie_dbPass}@openhouseapplication.uz2u2.mongodb.net/Hub?retryWrites=true&w=majority`,
@@ -13,7 +13,7 @@ mongoose.connect(
 )
 
 const store = new MongoDBStore({
-  uri: `mongodb+srv://MattAdmin:${process.env.MatthewMcKenzie_dbPass}@openhouseapplication.uz2u2.mongodb.net/Hub?retryWrites=true&w=majority`,
+  uri: `mongodb+srv://MattAdmin:${keys.module.MatthewMcKenzie_dbPass}@openhouseapplication.uz2u2.mongodb.net/Hub?retryWrites=true&w=majority`,
   collection: 'user_sessions',
 })
 store.on('error', function(error) {
