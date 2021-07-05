@@ -1,0 +1,39 @@
+//- <Navbar bg="transparent" variant="light" expand="lg" className="">
+//-         <Navbar.Brand href="#home">
+//-           <img
+//-             src="/assets/illustrations/favicon_io/favicon.ico"
+//-             // width="30"
+//-             // height="30"
+//-             className="d-inline-block align-top"
+//-             alt="Open House Hub logo"
+//-           />
+//-         </Navbar.Brand>
+//-         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+//-         <Navbar.Collapse id="basic-navbar-nav">
+//-           <Nav className="mx-auto">
+//-             <Nav.Link as={Link} to="/">Home</Nav.Link>
+//-           </Nav>
+//-           <Nav.Link as={Link} to="/login">Log In</Nav.Link>
+//-         </Navbar.Collapse>
+//-       </Navbar>
+
+nav(class="bg-transparent navbar navbar-expand-lg navbar-light px-2")
+  a(href="/" class="navbar-brand") Hub 
+  button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+    span(class="navbar-toggler-icon" aria-controls="basic-navbar-nav")
+
+  div(class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent")
+    div(class="ml-auto")
+      a(class="nav-link btn btn-primary" href="#") Sign In 
+
+      //- li(class="nav-item dropdown")
+      //-   a(class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Dropdown
+      //-   div( class="dropdown-menu" aria-labelledby="navbarDropdown")
+      //-     a(class="dropdown-item" href="#") Action
+      //-     a(class="dropdown-item" href="#") Another action
+      //-     div(class="dropdown-divider")
+      //-     a(class="dropdown-item" href="#") Something else here
+
+
+
+  

@@ -1,11 +1,15 @@
 const bcrypt = require("bcryptjs")
+const mongoose = require("mongoose")
+const keys = require('../config/keys')
+
+// // Load User model
+const User = require("../models/User");
 
 exports.register = (req, res, next) => {
   // Implement the middleware function based on the options object
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       res.status(401).json({ field: "email", message: "Email already exists" });
-      next('route')
     } else {
       const newUser = new User({
         name: req.body.name,
@@ -16,13 +20,14 @@ exports.register = (req, res, next) => {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) next(err);
-          newUser.password = hash;
-          newUser.save()
-          .then(user => {
-            req.user = user
-            next()
-          })
-          .catch(next);
+          else {
+            newUser.password = hash;
+            newUser.save()
+            .then(user => {
+              next()
+            })
+            .catch(next);
+          }
         });
       });
     }

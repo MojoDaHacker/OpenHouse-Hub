@@ -1,22 +1,15 @@
 import React from 'react';
 import {Switch, Route, Link} from 'react-router-dom';
 import Home from './Home';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 import LeadCenter from './LeadCenter';
 import History from './History';
 import Analytics from './Analytics';
 import Settings from './Settings'
 import Session from './Session';
 import {Container, Row, Col, Navbar, Button, ButtonGroup} from 'react-bootstrap'
-import { IconContext } from 'react-icons';
-import { AiOutlineLineChart} from "react-icons/ai";
-import { AiOutlineHome } from "react-icons/ai";
-import { BsClockHistory } from "react-icons/bs";
-import { TiDocumentText } from "react-icons/ti";
-import { FiSettings } from "react-icons/fi";
-import * as cloneDeep from "lodash/cloneDeep"
 
-import 'styles/dashboard.scss'
+import '../styles/dashboard.scss'
 
 
 
@@ -93,13 +86,11 @@ function Sidebar(props){
   return (
     <div className="bg-primary rounded-pill">
       <ButtonGroup vertical>
-        <IconContext.Provider value={{ size: "1.5rem"}}>
-          <Link to="/"><Button className="rounded-circle p-3"><AiOutlineHome/></Button></Link>
-          <Link to="/history"><Button className="rounded-circle p-3"><BsClockHistory/></Button></Link>
-          <Link to="/analytics"><Button className="rounded-circle p-3"><AiOutlineLineChart/></Button></Link>
-          <Link to="/leads"><Button className="rounded-circle p-3"><TiDocumentText/></Button></Link>
-          <Link to="/settings"><Button className="rounded-circle p-3"><FiSettings /></Button></Link>
-        </IconContext.Provider>
+        <Link to="/"><Button className="rounded-circle p-3">Icons</Button></Link>
+        <Link to="/history"><Button className="rounded-circle p-3">Icons</Button></Link>
+        <Link to="/analytics"><Button className="rounded-circle p-3">Icons</Button></Link>
+        <Link to="/leads"><Button className="rounded-circle p-3">Icons</Button></Link>
+        <Link to="/settings"><Button className="rounded-circle p-3">Icons</Button></Link>
       </ButtonGroup>
     </div>
   )

@@ -1,65 +1,86 @@
 import React, { useState, useEffect } from 'react'
-import EndSession from '../Components/EndSessionButton'
-import {Container, Row, Col, Form, Card, Button, ListGroup} from 'react-bootstrap'
-import {Check, X} from 'react-bootstrap-icons'
-
+import SessionAdsAndInfo from '../components/SessionAdsAndInfo'
+import SessionCreationModal from '../components/SessionCreationModal'
+import ProfilePic from '../assets/img/profile.jpg'
+import { useHistory } from 'react-router-dom';
+import { Container, Row, Col, Card, Button, ListGroup, Image, ButtonGroup } from 'react-bootstrap'
+import { Check, X, EnvelopeFill, TelephoneFill, PersonCircle, PencilFill, CircleFill, InfoCircle, Building } from 'react-bootstrap-icons'
+import VisitorSignIn from '../components/VisitorSignIn'
 
 const Session = props => {
-  const [currentForm, changeCurrentForm] = useState(0);
-  const [isChecked, setCheck] = useState(false);
-  const formTypes = ["Name", "Phone", "Realtor"];
-  const [input, setInput] = useState("");
-  const [visitor, addVisitor] = useState({});
-  const [visitors, updateVisitors] = useState([]);
-  const [showAppreciation, setAppreciation] = useState(false);
-
-  useEffect(() => {
-    if (currentForm > 2) {
-      updateVisitors(visitors => [...visitors, visitor])
-      setAppreciation(true)
-      setTimeout(() => {
-        setAppreciation(false)
-      }, 4000);
-      changeCurrentForm(0)
+  const [visitors, updateVisitors] = useState(
+    props.user.activeSession ? props.user.activeSession.visitors : []
+  );
+  const history = useHistory()
+  
+  const saveVisitor = (visitor, cb) => {
+    const init = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(visitor) // body data type must match "Content-Type" header
     }
-  }, [visitors, visitor, isChecked])
 
-
-  const handleChange = e => currentForm !== 2 ? setInput(e.target.value) : setCheck(!isChecked)
-  const handleSubmit = e => {
-    e.preventDefault();
-    e.stopPropagation();
-
-
-    if (currentForm !== 2) {
-      setInput("")
-      addVisitor(visitor => ({...visitor, [formTypes[currentForm]] : input}))
-      changeCurrentForm(currentForm + 1)
-    } else {
-      addVisitor(visitor => ({...visitor, [formTypes[currentForm]] : isChecked}))
-      changeCurrentForm(currentForm + 1)
-      setCheck(false)
-    }
+    //send vistor to server to be saved
+    return fetch("/api/sessions/addVisitor", init)
+    .then(res => res.json())
+    .then(data => {
+      if(data.operationSuccessful) {
+        updateVisitors(visitors => [...visitors, visitor])
+      }
+    })
+    .catch(err => err)
   }
+  const endSession = () => {
+    fetch("/api/sessions/endSession")
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if(data.operationSuccessful){
+        props.updateUser(data.user)
+        history.push("/")
+      }
+    })
+  }
+
+
   return (
     <div className="vh-100" id="desk">
+      <SessionCreationModal show={!props.user.hasActiveSession}/>
       <Container className="h-100 py-4">
-        
         <Row className="h-100 mx-3">
-          <Col className="h-100 d-flex flex-column text-center">
-            <h1>Welcome</h1>
-            <Card className="h-75 my-auto">
-              <Card.Header className="p-1">
-                <h2>Did you know?</h2>
-              </Card.Header>
-              <Card.Body>
-                
+          <Col xs="auto" className="mb-3 mt-auto">
+            <ButtonGroup vertical toggle={false} size="sm">
+              <Button variant="light"><PencilFill /></Button>
+              <Button variant="light"><InfoCircle /></Button>
+              <Button onClick={endSession} variant="light" className="text-danger"><CircleFill /></Button>
+            </ButtonGroup>
+          </Col>
+          <Col className="h-100 d-flex flex-column">
+            <Card className="h-100 m-3">
+              <Card.Body className="d-flex flex-column h-100">
+                {/* <SessionAdsAndInfo /> */}
+                <div className="text-center h-100 d-flex flex-column align-items-center">
+                  <Image src={ProfilePic} width={200} roundedCircle/>
+                  <div className="h-100">
+                    <p className="">Realtor Badges</p>
+                  </div>
+                  <div className="h-100">
+                    <p className=""><PersonCircle />{props.user.name}</p>
+                  </div>
+                  <div className="h-100">
+                    <p className=""><TelephoneFill />Realtor Number</p>
+                  </div>
+                  <div className="h-100">
+                    <p className=""><EnvelopeFill />Realtor Email</p>
+                  </div>
+                  <div className="h-100">
+                    <p className=""><Building />Realtor Company</p>
+                  </div>
+                </div>
               </Card.Body>
             </Card>
-
-            <div className="mt-auto">
-              <EndSession className="rounded-pill"></EndSession>
-            </div>
           </Col>
           <Col className="h-100 overflow-hidden">
             <div className="h-100 d-flex flex-column overflow-hidden rounded shadow" id="paper">
@@ -73,38 +94,14 @@ const Session = props => {
               <div className="overflow-auto">
                 {visitors.map((val, i) => (
                   <ListGroup className="p-2 m-0" key={i} as={Row} horizontal>
-                    <ListGroup.Item as={Col} xs={2} className="bg-transparent border-0">{val.Realtor ? <Check /> : <X />}</ListGroup.Item>
-                    <ListGroup.Item as={Col} xs={5} className="bg-transparent border-0 flex-grow-1">{val.Name}</ListGroup.Item>
-                    <ListGroup.Item as={Col} xs={5} className="flex-grow-1 bg-transparent border-0">{val.Phone}</ListGroup.Item>
+                    <ListGroup.Item as={Col} xs={2} className="bg-transparent border-0">{val.realtor ? <Check /> : <X />}</ListGroup.Item>
+                    <ListGroup.Item as={Col} xs={5} className="bg-transparent border-0 flex-grow-1">{val.name}</ListGroup.Item>
+                    <ListGroup.Item as={Col} xs={5} className="flex-grow-1 bg-transparent border-0">{val.phone}</ListGroup.Item>
                   </ListGroup>
                 ))}
               </div>
               <div className="my-auto p-2">
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="p-2 text-center">
-                    <Form.Label>{showAppreciation ? `Enjoy the tour ${visitors[visitors.length - 1].Name.split(" ")[0]}` : "Please Sign In" }</Form.Label>
-                    {currentForm == 2 ? (
-                      <Form.Check
-                        onChange={handleChange}
-                        type="checkbox"
-                        label={`Have a ${formTypes[currentForm]}?`}
-                      />
-                    ) : (
-                      <Form.Control 
-                        required
-                        className="border-0 bg-transparent text-center"
-                        value={input} 
-                        name={formTypes[currentForm]} 
-                        onChange={handleChange} 
-                        type={formTypes[currentForm]} 
-                        placeholder={formTypes[currentForm]} 
-                      />
-                    )}
-                  </Form.Group>
-                  <Form.Group className="mt-3 text-center">
-                    <Button type="sumbit">Submit</Button>
-                  </Form.Group>
-                </Form>
+                <VisitorSignIn saveVisitor={saveVisitor}/>
               </div>
             </div>
           </Col>

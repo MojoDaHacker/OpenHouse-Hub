@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Table from '../Components/Table.js'
+import Table from '../components/Table.js'
 
 const History = props => {
   const [leadHistory, setHistory] = useState([])

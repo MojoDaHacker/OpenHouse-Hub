@@ -1,82 +1,88 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 const session = require('express-session');
-const path = require('path');
+const MongoDBStore = require('connect-mongodb-session')(session)
+const path = require('path')
+const mongoose = require('mongoose')
+const keys = require('./config/keys')
 
+mongoose.connect(
+  `mongodb+srv://MattAdmin:${keys.module.MatthewMcKenzie_dbPass}@openhouseapplication.uz2u2.mongodb.net/Hub?retryWrites=true&w=majority`,
+  {useNewUrlParser: true, useUnifiedTopology: true},
+)
 
-const {registerUser} = require("./operations/index")
-const users = require("./routes/api/users");
+const store = new MongoDBStore({
+  uri: `mongodb+srv://MattAdmin:${keys.module.MatthewMcKenzie_dbPass}@openhouseapplication.uz2u2.mongodb.net/Hub?retryWrites=true&w=majority`,
+  collection: 'user_sessions',
+})
+store.on('error', function(error) {
+  console.log(error);
+  console.log("error here!");
+});
+
 
 const app = express();
 
-// Passport config
-require("./config/passport")(passport);
-
-
-const cookie = {
-  httpOnly : false,
-  sameSite : false,
-}
+app.set('view engine', 'pug')
 
 // middlewares
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-app.use(session({secret: "terces", saveUninitialized: false , resave: false, cookie}));
-app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(session({
+  secret: "terces12345",
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+  store: store,
+  saveUninitialized: false,
+  resave: false
+}));
+// app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
 
+const users = require("./routes/api/users");
+const activeSession = require("./routes/api/sessions");
+const submissions = require("./routes/submissions/users");
 
-// MongoDB configuration and connection
-const db = require("./config/keys.js").mongoURI;
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(() => {
-  console.log("MongoDB successfully connected")
-})
-.catch(err => console.log(err));
+app.use("/api", users);
+app.use("/api/sessions", activeSession);
+app.use("/submissions", submissions);
 
-// app.get('/ping', function (req, res) {
-//   return res.send('pong');
-//  });
- 
-// app.get('/*', function (req, res) {
-//   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-// });
-
-// Routes
-app.use("/api/users", users);
-
-app.get('/logout', function(req, res){
-  console.log("Logged Out!")
-  req.logout();
-  res.end();
+app.get('/', function (req, res) {
+  store.get(req.session.id, (err, session) => {
+    if(!err){
+      if(session){
+        app.use(express.static(path.join(__dirname, 'client', 'build')));
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+      }
+      else{
+        res.render('index', { main: "/" })
+      }
+    }
+  })
 });
-
-app.post('/login',
-  passport.authenticate('local'),
-  function(req, res) { 
-    res.json({name : req.user.name})
-  }
-);
-
-app.post('/register',
- registerUser,
- passport.authenticate('local'),
- function(req, res){
-  res.json({name : req.user.name});
-  console.log("Registered and Logged In!")
-});
+app.get('/login', (req, res) => {
+  res.render('index', { main : "login" })
+} )
+app.get('/register', (req, res) => {
+  res.render('index', { main: "register" })
+} )
 
 //err handling
 app.use(function (err, req, res, next) {
-  console.log("ran")
+
   console.error(err.stack)
   res.status(500).send('Something broke!')
 })
 
 const port = process.env.PORT || 5000; // process.env.port is Heroku's port if you choose to deploy the app there
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+
+const handleProcessTermination = () => {
+  mongoose.disconnect()
+  process.exit(1)
+}
+
+process.on('SIGTERM', handleProcessTermination)
+process.on('SIGINT', handleProcessTermination)
