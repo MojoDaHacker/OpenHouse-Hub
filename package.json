@@ -6,7 +6,7 @@
   "scripts": {
     "client-install": "npm install --prefix client",
     "client": "yarn start --prefix client",
-    "landing": "yarn start --prefix landing",
+    "build": "yarn --cwd=client build",
     "dev": "concurrently \"yarn server\" \"yarn run --cwd=client start\"",
     "start": "node server.js",
     "server": "nodemon server.js"
