@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "description": "Open House App",
   "main": "server.js",
-  "scripts": {
-    "client-install": "npm install --prefix client",
-    "client": "yarn start --prefix client",
-    "build": "yarn --cwd=client build",
+  "scripts": { 
+    "heroku-prebuild": "yarn --cwd=client yarn && build",
     "dev": "concurrently \"yarn server\" \"yarn run --cwd=client start\"",
     "start": "node server.js",
     "server": "nodemon server.js"
