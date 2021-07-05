@@ -4,7 +4,7 @@
   "description": "Open House App",
   "main": "server.js",
   "scripts": { 
-    "heroku-prebuild": "yarn --cwd=client yarn install && yarn build",
+    "heroku-postbuild": "cd client && yarn && yarn build",
     "dev": "concurrently \"yarn server\" \"yarn run --cwd=client start\"",
     "start": "node server.js",
     "server": "nodemon server.js"
