@@ -8,11 +8,12 @@ export default function WeatherDisplay(){
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=Orlando&units=imperial&appid=3abd9c2df6a249e8abcf4f812de0a627`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Orlando&units=imperial&appid=3abd9c2df6a249e8abcf4f812de0a627`)
     .then(res => res.json())
     .then(data => setWeather(data))
     .catch(err => console.log(err))
   }, [])
+
   const variants = {
     open: {
       borderRadius: '2rem',
@@ -82,7 +83,6 @@ export default function WeatherDisplay(){
     const words = desc.split(" ");
     return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
   }
-  console.log(weatherData)
 
   if (!weatherData) {
     return (
