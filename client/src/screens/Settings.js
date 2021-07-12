@@ -1,72 +1,98 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
-import {Card, Container, Button, ListGroup, Col, Row, Jumbotron} from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import SettingsSideNav from "../components/SettingsSideNav.js"
+import ProfilePic from '../assets/img/profile.jpg'
+import { Container, Col, Row, Button, Tab } from 'react-bootstrap'
 
 const Settings = props => {
   const history = useHistory();
-  console.log(history)
-
+  
   const logout = () => {
-    props.authenticate();
-    history.push("/")
+    fetch('/logout')
+    .then(res => {
+      if(res.status == 200) {
+        // Cookies.remove('connect.sid', { path: '/' })
+        // authKit.authorizeUser(false)
+        // history.push("/")
+      }
+    })
   }
 
   return (
-    <Container className="h-100 d-flex flex-column" fluid>
-      <Row className="h-100">
-        <Col className="h-100">
-          <Card className="my-auto h-100">
-            <Card.Body className="p-2 overflow-auto">
-              <ListGroup>
-                <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-1 border-left-0 border-right-0 border-top-0">Edit Profile</Button>
-                </ListGroup.Item>
-              </ListGroup>
-              <Jumbotron className="mt-2">
-                <Container>
-                  <Row>
-                    <Col>
-                      <p>Full Name : Matthew McKenzie</p>
-                      <p>Email : Mojomckenzie@knights.ucf.edu</p>
-                      <p>Company : EXP Realty LLC</p>
-                    </Col>
-                    <Col>
-
-                    </Col>
-                  </Row>
-                </Container>
-              </Jumbotron>
-              <ListGroup className="mt-5">
-                <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Invite a Friend</Button>
-                </ListGroup.Item>
-              </ListGroup>
-              <ListGroup className="mt-5">
-                <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Rate OpenHouse Hub</Button>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">About OpenHouse Hub</Button>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Terms & Policy</Button>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Privacy Policy</Button>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Button variant="" className="bg-transparent p-0 ">Report a Problem / Provide Feedback</Button>
-                </ListGroup.Item>
-              </ListGroup>
-              <div className="w-100 text-center">
-                <Button className="m-3 btn-danger" onClick={logout}>Log Out</Button>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+    <Container className="mt-3">
+      <Tab.Container defaultActiveKey={1}>
+        <Row className="border overflow-hidden shadow" style={{ borderRadius: 20 }} noGutters>
+          <Col xs={2} >
+            <SettingsSideNav />
+          </Col>
+          <Col>
+            <Tab.Content className="p-3">
+              <Tab.Pane eventKey={1}>
+                <AccountSettings account={props.user} />
+              </Tab.Pane>
+              <Tab.Pane eventKey={2}>
+                <GeneralSettings />
+              </Tab.Pane>
+              <Tab.Pane eventKey={3}>
+                <SubscriptionSettings />
+              </Tab.Pane>
+              <Tab.Pane eventKey={4}>
+                <NotificationSettings />
+              </Tab.Pane>
+            </Tab.Content>
+          </Col>
+        </Row>
+      </Tab.Container>
     </Container>
   )
 }
+
+const AccountSettings = ({ account }) => (
+  <>
+    <div>
+      <h3>Plan</h3>
+      <p>Free Plan</p>
+    </div>
+    <div>
+      <h3>Account</h3>
+      <div>
+        <p>{account.name}</p>
+        <p>{account.email}</p>
+      </div>
+      <div>
+        <Button variant="light">Change Password</Button>
+      </div>
+    </div>
+    <div>
+      <h3>Realtor Profile</h3>
+      <p>Realtor Picture</p>
+      <p>Realtor Badges</p>
+      <p>Realtor Contact</p>
+      <p>Realtor Email</p>
+      <p>Realtor Website</p>
+    </div>
+    <div>
+      <p>Connected Accounts</p>
+    </div>
+    <div>
+      <Button variant="danger">Delete Account</Button>
+    </div>
+  </>
+)
+const GeneralSettings = () => (
+  <div>
+    Hello
+  </div>
+)
+const SubscriptionSettings = () => (
+  <div>
+    Hello
+  </div>
+)
+const NotificationSettings = () => (
+  <div>
+    Hello
+  </div>
+)
 
 export default Settings

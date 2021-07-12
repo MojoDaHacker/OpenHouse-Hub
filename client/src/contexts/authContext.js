@@ -1,28 +1,26 @@
-import React, {useState, createContext} from 'react'
+import React, {useState, createContext, useContext} from 'react'
 
-const AuthContext = createContext();
-
-const authData = {
-  isAuthenticated: true,
-  authUser : {}
-}
+export const AuthContext = createContext();
 
 export const AuthProvider = props => {
-  const [auth, setAuth] = useState(authData)
+  const [auth, setAuth] = useState()
 
-  function authorizeUser(user){
+  function authorizeUser(authenticated, user = {}){
     setAuth({
+      isAuthenticated : authenticated,
       authUser: user
     })
   }
 
-  const authKit = {auth, authorizeUser}
 
-  return <AuthContext.Provider value={authKit} {...props} />
+  return <AuthContext.Provider value={[auth, setAuth]} {...props}>{props.children}</AuthContext.Provider>
 }
 
 export const AuthConsumer = props => {
   return <AuthContext.Consumer {...props}/>
 }
 
-export default 0
+export const AuthHook = props => {
+  const context = useContext(AuthContext)
+  return context
+}

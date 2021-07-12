@@ -1,27 +1,32 @@
-import React, {useState, createContext} from 'react'
-
-const SessContext = createContext();
+import React, {useState, useContext, createContext} from 'react'
 
 const sessData = {
   sessInitialized: false,
 }
+const SessContext = createContext(sessData);
 
 export const SessProvider = props => {
   const [session, setSession] = useState(sessData)
 
-  // function createSession(isSessionInitialized){
-  //   setSession({
-  //     sessInitialized: isSessionInitialized
-  //   })
-  // }
+  function createSession(isSessionInitialized){
+    console.log(isSessionInitialized)
+    setSession({
+      sessInitialized: isSessionInitialized
+    })
+  }
 
-  const sessKit = {session, setSession}
+  const sessKit = {session, createSession}
 
   return <SessContext.Provider value={sessKit} {...props} />
 }
 
 export const SessConsumer = props => {
   return <SessContext.Consumer {...props}/>
+}
+
+export const SessHook = props => {
+  const context = useContext(SessContext)
+  return context
 }
 
 export default 0
