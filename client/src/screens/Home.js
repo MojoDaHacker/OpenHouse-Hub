@@ -38,21 +38,23 @@ export default class Home extends React.Component{
                 <ListGroup variant="flush">
                   {user.completedSessions.map((session, i) => (
                     <ListGroup.Item className="border-0" key={session+i}>
-                      <Row className="d-flex pb-2 border-bottom">
-                        <Col className="flex-grow-1">
-                          <span className="">{session.address}</span>
+                      <Row className="pb-2 border-bottom">
+                        <Col className="d-flex justify-content-between align-items-center">
                           <div>
-                            <span className="m-1 text-muted fst-italic small">{new Date(session.date).toDateString()}</span>
+                            <span className="">{session.address}</span>
+                            <div>
+                              <span className="m-1 text-muted fst-italic small">{new Date(session.date).toDateString()}</span>
+                            </div>
                           </div>
-                        </Col>
-                        <Col className="flex-grow-1">
-                          <PeopleFill size={18}/><span className="m-3">{session.visitors.length}</span>
-                          <HandThumbsUpFill size={18}/><span className="m-3">{session.visitors.length}</span>
-                        </Col>
-                        <Col xs="auto">
-                          <Button as={Link} variant="link" to="/"><Window size={18} /></Button>
-                          <Button as={Link} variant="link" to="/"><Download size={18} /></Button>
-                          <Button as={Link} variant="link" to="/"><XLg size={18} /></Button>
+                          <div>
+                            <PeopleFill size={18}/><span className="m-3">{session.visitors.length}</span>
+                            <HandThumbsUpFill size={18}/><span className="m-3">{session.visitors.length}</span>
+                          </div>
+                          <div>
+                            <Button as={Link} variant="link" title="Open New Window" to="/sessiondetail/176254"><Window size={16} /></Button>
+                            <Button as={Link} variant="link" title="Download" to="/"><Download size={16} /></Button>
+                            <Button as={Link} variant="link" title="Delete" to="/"><XLg size={16} /></Button>
+                          </div>
                         </Col>
                       </Row>
                     </ListGroup.Item>

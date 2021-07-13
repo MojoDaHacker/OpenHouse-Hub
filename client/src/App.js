@@ -6,6 +6,7 @@ import Home from './screens/Home';
 import { Spinner } from 'react-bootstrap'
 import { Switch, Route } from "react-router-dom";
 import useUser from './hooks/useUser'
+import SessionDetail from './screens/SessionDetails';
 
 export default function App(props){
   const { user, updateUser } = useUser()
@@ -24,6 +25,9 @@ export default function App(props){
         </Route>
         <Layout>
           <Switch>
+            <Route path="/sessiondetail/:id">
+              <SessionDetail user={user} updateUser={updateUser}/>
+            </Route>
             <Route path="/settings">
               <Settings user={user} updateUser={updateUser}/>
             </Route>
