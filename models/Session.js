@@ -26,7 +26,15 @@ const SessionSchema = new Schema({
     type: Number,
     required: true
   },
-  visitors: [VisitorSchema],
+  visitors: {
+    type: [VisitorSchema],
+    required: false
+  },
+  likes: {
+    type: Number,
+    default: 0,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now

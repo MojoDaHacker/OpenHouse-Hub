@@ -47,7 +47,7 @@ const VisitorSignIn = props => {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group className="p-2 text-center">
-        <Form.Label>{appreciate ? `Enjoy the tour ${visitor.name.split(" ")[0]}` : "Please Sign In" }</Form.Label>
+        <Form.Label>{appreciate ? `Enjoy the tour ${formatAppreciationName(visitor.name)}` : "Please Sign In" }</Form.Label>
         {currentForm === 2 ? (
           <Form.Check
             onChange={handleVisitors}
@@ -71,6 +71,14 @@ const VisitorSignIn = props => {
       </Form.Group>
     </Form>
   )
+}
+
+const formatAppreciationName = name => {
+  if(name.trim().includes(" ")){
+    return name.slice(0, name.indexOf(" "))
+  } else {
+    return name
+  }
 }
 
 export default VisitorSignIn

@@ -12,11 +12,9 @@ const {addVisitor, downloadCSV} = require("../../helpers/addVisitors")
 // @desc create or append new CSV file with new visitors
 router.post("/addVisitor", (req, res) => {
   addVisitor(req.body, req.session)
-  .then(session => {
-    console.log(session)
+  .then(() => {
     res.send({
       operationSuccessful: true,
-      message: ""
     })
   })
   .catch(err => res.send({
@@ -25,8 +23,8 @@ router.post("/addVisitor", (req, res) => {
   }))
 });
 
-// send csv then delete csv from fs
-router.get("/endSessionCSV", (req, res) => {
+// creates
+router.get("/downloadSessionCSV", (req, res) => {
   const file = downloadCSV(req.session.id);
 
   if(file){ // send CSV file for download
@@ -48,24 +46,16 @@ router.post("/createSession", (req, res) => {
   User.findById(userId)
   .then(user => {
     if(user){
-      const newSession = new Session({
+      const createdSession = new Session({
         linkedUser: userId,
         ...req.body
       })
-      newSession.save()
-      .then(session => {
-        user.hasActiveSession = true
-        user.activeSession = session
-        user.markModified('activeSession')
-        
-        user.save()
-        .then(user => {
-          res.send({ operationSuccessful : true, session })
-        })
-        .catch(err => res.send({
-          operationSuccessful: false,
-          message: err
-        }))
+      user.latestSession = createdSession._id
+      user.hasActiveSession = true
+      user.save()
+      .then(user => {
+        createdSession.save()
+        res.send({ operationSuccessful : true, createdSession, user })
       })
       .catch(err => res.send({
         operationSuccessful: false,
@@ -79,16 +69,17 @@ router.post("/createSession", (req, res) => {
 
 router.get("/endSession", (req, res) => {
   const userId = req.session.passport.user;
-  User.findById(userId)
+  User.findById(userId, '-password')
   .then(user => {
     if(user){
-      user.completedSessions.push(user.activeSession)
-      user.activeSession = {};
+      user.completedSessions.push(user.latestSession)
       user.hasActiveSession = false;
-      user.markModified('activeSession')
 
       user.save()
-      .then(() => res.send({ operationSuccessful : true, user : user }))
+      .then(async user => {
+        await user.populate('latestSession').populate('completedSessions').execPopulate()
+        res.send({ operationSuccessful : true, user })
+      })
       .catch(err => {
         console.log(err)
         res.send({

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Container, Row, Col, ListGroup, Carousel } from 'react-bootstrap'
 import Chart from '../components/Chart'
 
 const SessionDetail = props => {
-
+  const { i } = useParams();
   const { completedSessions } = props.user
 
   return (
@@ -33,13 +34,13 @@ const SessionDetail = props => {
       </Row>
       <Row>
         <Col xs={8}>
-          {completedSessions[0].visitors.length < 1 ? (
+          {completedSessions[i].visitors.length < 1 ? (
             <div className="text-center">
               <p>Uh oh, it seems you didn't sign in any visitors at this open house...</p>
             </div>
           ) : (
             <ListGroup>
-              {completedSessions[0].visitors.map(( obj, i ) => (
+              {completedSessions[i].visitors.map(( obj, i ) => (
                 <ListGroup.Item key={i}>Hello</ListGroup.Item>
               ))}
             </ListGroup>

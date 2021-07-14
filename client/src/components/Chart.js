@@ -26,7 +26,7 @@ const Chart = props => {
 
 
   return (
-    <Pie data={data} width="100%" height="100%"/>
+    <Pie data={data}/>
   )
 }
 

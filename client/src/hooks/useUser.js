@@ -10,7 +10,10 @@ export default function useUser() {
   const getUser = () => {
     fetch('/api/getUser')
     .then(res => res.json())
-    .then(user => setUser(user))
+    .then(user => {
+      console.log(user)
+      setUser(user)
+    })
   }
 
   const updateUser = user => {

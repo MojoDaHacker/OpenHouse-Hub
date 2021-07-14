@@ -86,13 +86,15 @@ const SessionCreationModal = props => {
       body : JSON.stringify(formState)
     }
 
-    console.log(init.body)
-
     fetch("/api/sessions/createSession", init)
     .then(res => res.json())
     .then(data => {
       if(data.operationSuccessful){
         handleModalVisibility()
+        props.updateUser(user => ({
+          ...user,
+          latestSession: data.createdSession
+        }))
       } else {
         console.log(data)
       }

@@ -5,14 +5,13 @@ import Illustration1 from '../assets/illustrations/teamwork.svg'
 import { Container, Row, Col, Button, Image, ListGroup } from 'react-bootstrap'
 import { Plus, Window, Download, XLg, PeopleFill, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
+import createCSV from '../lib/csv'
 
 export default class Home extends React.Component{
-  constructor(props){
-    super(props)
-    this.state = {
-      recentLeads : [0],
-      notifications : [],
-    }
+
+  downloadCsv(session){
+    console.log(session)
+    createCSV(session.visitors)
   }
   
   render(){
@@ -37,7 +36,7 @@ export default class Home extends React.Component{
               ) : (
                 <ListGroup variant="flush">
                   {user.completedSessions.map((session, i) => (
-                    <ListGroup.Item className="border-0" key={session+i}>
+                    <ListGroup.Item className="border-0" key={`session + ${i}`}>
                       <Row className="pb-2 border-bottom">
                         <Col className="d-flex justify-content-between align-items-center">
                           <div>
@@ -51,9 +50,9 @@ export default class Home extends React.Component{
                             <HandThumbsUpFill size={18}/><span className="m-3">{session.visitors.length}</span>
                           </div>
                           <div>
-                            <Button as={Link} variant="link" title="Open New Window" to="/sessiondetail/176254"><Window size={16} /></Button>
-                            <Button as={Link} variant="link" title="Download" to="/"><Download size={16} /></Button>
-                            <Button as={Link} variant="link" title="Delete" to="/"><XLg size={16} /></Button>
+                            <Button as={Link} variant="link" title="Open New Window" to={`/sessiondetail/${i}`}><Window size={16} /></Button>
+                            <Button onClick={() => this.downloadCsv(session)} variant="link" title="Download"><Download size={16} /></Button>
+                            <Button onClick={null} variant="link" title="Delete"><XLg size={16} /></Button>
                           </div>
                         </Col>
                       </Row>

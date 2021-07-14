@@ -32,11 +32,15 @@ const UserSchema = new Schema({
     default: false,
     required: true
   },
-  activeSession : Object,
-  completedSessions : {
-    type: [SessionSchema],
-    default: []
+  latestSession : {
+    type: Schema.Types.ObjectId,
+    ref: "OpenHouse_sessions",
   },
+  completedSessions : [{
+    type: Schema.Types.ObjectId,
+    ref: "OpenHouse_sessions",
+    default: []
+  }],
   scheduledSessions : {
     type: [SessionSchema],
     default: []
@@ -57,14 +61,6 @@ UserSchema.virtual('fullName').get(function() {
   this.name.first = v.substr(0, v.indexOf(' '));
   this.name.last = v.substr(v.indexOf(' ') + 1);
 });
-
-// UserSchema.virtual('hasActiveSession').get(function() {
-//   return this.name.first + ' ' + this.name.last;
-// }).set(function(v) {
-//   this.name.first = v.substr(0, v.indexOf(' '));
-//   this.name.last = v.substr(v.indexOf(' ') + 1);
-// });
-
 
 
 module.exports = {

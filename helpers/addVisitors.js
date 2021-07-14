@@ -2,13 +2,13 @@ const path = require("path");
 const fs = require("fs");
 
 const { Session } = require("../models/Session")
-const { Visitor } = require("../models/Visitor")
+const { Visitor } = require("../models/Visitor");
 
 
-const addVisitor = (visitor, session) => {
-  console.log(visitor, session.passport)
-  return Session.findOne()
-  .byLinkedUser(session.passport.user)
+const addVisitor = payload => {
+  const { visitor, latestSessionId } = payload
+  
+  return Session.findById(latestSessionId)
   .then(session => {
     const newVisitor = new Visitor(visitor)
     session.visitors.push(newVisitor)

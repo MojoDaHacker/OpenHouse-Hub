@@ -8,18 +8,28 @@ import { Check, X, EnvelopeFill, TelephoneFill, PersonCircle, PencilFill, Circle
 import VisitorSignIn from '../components/VisitorSignIn'
 
 const Session = props => {
+  const [endSessionSwitch, setEndSession] = useState(false)
   const [visitors, updateVisitors] = useState(
-    props.user.activeSession ? props.user.activeSession.visitors : []
+    props.user.latestSession && props.user.hasActiveSession ? props.user.latestSession.visitors : []
   );
   const history = useHistory()
+
+  useEffect(() => {
+    endSessionSwitch && history.push("/")
+  }, [endSessionSwitch])
   
   const saveVisitor = (visitor, cb) => {
+    const { latestSession } = props.user
+
     const init = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(visitor) // body data type must match "Content-Type" header
+      body: JSON.stringify({
+        latestSessionId: latestSession._id,
+        visitor
+      }) // body data type must match "Content-Type" header
     }
 
     //send vistor to server to be saved
@@ -27,6 +37,7 @@ const Session = props => {
     .then(res => res.json())
     .then(data => {
       if(data.operationSuccessful) {
+        console.log(data)
         updateVisitors(visitors => [...visitors, visitor])
       }
     })
@@ -39,7 +50,7 @@ const Session = props => {
       console.log(data)
       if(data.operationSuccessful){
         props.updateUser(data.user)
-        history.push("/")
+        setEndSession(true)
       }
     })
   }
@@ -47,7 +58,7 @@ const Session = props => {
 
   return (
     <div className="vh-100" id="desk">
-      <SessionCreationModal show={!props.user.hasActiveSession}/>
+      <SessionCreationModal show={!props.user.hasActiveSession} updateUser={props.updateUser}/>
       <Container className="h-100 py-4">
         <Row className="h-100 mx-3">
           <Col xs="auto" className="mb-3 mt-auto">

@@ -25,7 +25,7 @@ export default function App(props){
         </Route>
         <Layout>
           <Switch>
-            <Route path="/sessiondetail/:id">
+            <Route path="/sessiondetail/:i">
               <SessionDetail user={user} updateUser={updateUser}/>
             </Route>
             <Route path="/settings">
