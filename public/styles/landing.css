@@ -1,0 +1,7 @@
+#Landing {
+  background-image:  url("../assets/AppleDevices1.png"), url("../assets/kitchenCounter.jpeg");
+  background-position: bottom right ;
+  background-size: 65% ,cover;
+  background-repeat: no-repeat;
+  /* box-shadow: inset 0px 25px 75px 5px #000; */
+}

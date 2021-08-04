@@ -8,7 +8,7 @@ export default function WeatherDisplay(){
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Orlando&units=imperial&appid=3abd9c2df6a249e8abcf4f812de0a627`)
+    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=28.53&lon=-81.37&exclude=minutely,hourly,units=metric&appid=3abd9c2df6a249e8abcf4f812de0a627`)
     .then(res => res.json())
     .then(data => setWeather(data))
     .catch(err => console.log(err))
@@ -83,7 +83,7 @@ export default function WeatherDisplay(){
     const words = desc.split(" ");
     return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
   }
-
+  console.log(weatherData)
   if (!weatherData) {
     return (
       <div className="text-center h-100">
@@ -103,7 +103,7 @@ export default function WeatherDisplay(){
                     <div>
                       <img
                         width={76}
-                        src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                        src={`http://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`}
                         alt="current weather logo"
                       />
                     </div>
@@ -112,36 +112,36 @@ export default function WeatherDisplay(){
                 <Row>
                   <Col>
                     <div>
-                      <p>{Math.round(weatherData.main.temp)}</p>
+                      <p>{Math.round(weatherData.current.temp)}</p>
                     </div>
                   </Col>
                 </Row>
                 <Row noGutters>
                   <Col className="">
                     <div>
-                      <p className="m-0">{weatherData.name}</p>
+                      <p className="m-0">Orlando</p>
                       <p className="m-0">{weatherData.weather[0].main}</p>
                     </div>
                   </Col>
                 </Row>
               </Container>
-                <ListGroup as={motion.ul} variants={ListGroupVariants}>
-                  {[0,1,2,3,4,5,6,7].map(val => (
-                    <ListGroup.Item as={motion.li} variants={ListItemVariants} key={val} className="bg-transparent text-light border-0">
-                      <div className="w-100 text-center">
-                        <span className="m-3">7/1</span>
-                        <span className="m-3">
-                          <img
-                            width={30}
-                            src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
-                            alt="current weather logo"
-                          />
-                        </span>
-                        <span className="m-3">66"</span>
-                      </div>
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
+              <ListGroup as={motion.ul} variants={ListGroupVariants}>
+                {[0,1,2,3,4,5,6,7].map(val => (
+                  <ListGroup.Item as={motion.li} variants={ListItemVariants} key={val} className="bg-transparent text-light border-0">
+                    <div className="w-100 text-center">
+                      <span className="m-3">7/1</span>
+                      <span className="m-3">
+                        <img
+                          width={30}
+                          src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                          alt="current weather logo"
+                        />
+                      </span>
+                      <span className="m-3">66"</span>
+                    </div>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
             </Card.Body>
           </Card>
         </div>
