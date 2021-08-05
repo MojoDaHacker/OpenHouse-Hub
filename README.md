@@ -3,7 +3,27 @@ Open House Hub
 
 ## Description
 
-This is my Open House Application made use the MERN STACK technologies.
+This is my Open House Application made use the MERN STACK technologies. Comprised of the Express Backend to receive requests to serve the application to the end user and also a api for some of the business logic of the interal react application. You will probably see alot of branches that correspond to different versions of the same app, the only difference is that some have more features and/or are made with a different React Framework (NextJS). Some key technical aspects to point out :
+
+### Front End
+
+* State Management : React Context and Hooks
+
+* UI Library : React Boostrap
+
+* React Router : Browser Navigation
+
+* Framer Motion : Simple Fluid Animations
+
+### Back End
+
+* Token and Password Encrytions : bCrypt
+
+* Session Management : Express Session utilizing MongoDB as Session Store
+
+* Object Relational Mappings : Mongoose
+
+* Authentication : Passport
 
 ## Usage
 
