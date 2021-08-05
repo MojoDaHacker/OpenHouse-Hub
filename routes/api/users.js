@@ -14,4 +14,26 @@ router.get("/getUser", (req, res, next) => {
   .catch(next)
 })
 
+router.post("/editUserRealtorProfile", (req, res, next) => {
+  const user_id = req.session.passport.user
+  User.findById(user_id, '-password')
+  .populate('latestSession')
+  .populate('completedSessions')
+  .then(user => {
+    res.send(user)
+  })
+  .catch(next)
+})
+
+router.get("/resetUserPassword", (req, res, next) => {
+  const user_id = req.session.passport.user
+  User.findById(user_id, '-password')
+  .populate('latestSession')
+  .populate('completedSessions')
+  .then(user => {
+    res.send(user)
+  })
+  .catch(next)
+})
+
 module.exports = router

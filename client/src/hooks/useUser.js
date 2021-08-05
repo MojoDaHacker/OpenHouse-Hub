@@ -10,18 +10,21 @@ export default function useUser() {
   const getUser = () => {
     fetch('/api/getUser')
     .then(res => res.json())
-    .then(user => {
-      console.log(user)
-      setUser(user)
-    })
+    .then(user => setUser(user))
   }
 
   const updateUser = user => {
     setUser(user)
   }
+  const updateUserRealtorProfile = profile => {
+    fetch('/api/editUserRealtorProfile', { method: "POST", body: JSON.stringify(profile) })
+    .then(res => res.json())
+    .then(user => setUser(user))
+  }
 
   return {
     user,
-    updateUser
+    updateUser,
+    updateUserRealtorProfile
   } 
 }

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import SettingsSideNav from "../components/SettingsSideNav.js"
 import ProfilePic from '../assets/img/profile.jpg'
 import { Container, Col, Row, Button, Tab } from 'react-bootstrap'
+import { PencilSquare } from 'react-bootstrap-icons'
 
 const Settings = props => {
   const history = useHistory();
@@ -64,7 +65,7 @@ const AccountSettings = ({ account }) => (
       </div>
     </div>
     <div>
-      <h3>Realtor Profile</h3>
+      <h3>Realtor Profile <Button variant="link"><PencilSquare size={18}/></Button></h3>
       <p>Realtor Picture</p>
       <p>Realtor Badges</p>
       <p>Realtor Contact</p>

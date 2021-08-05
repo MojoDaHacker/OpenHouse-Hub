@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import SessionAdsAndInfo from '../components/SessionAdsAndInfo'
-import SessionCreationModal from '../components/SessionCreationModal'
+// import SessionAdsAndInfo from '../components/SessionAdsAndInfo'
+import SessionCreationModal from '../components/modals/SessionCreationModal'
+import SetupRealtorProfileModal from '../components/modals/SetupRealtorProfileModal'
 import ProfilePic from '../assets/img/profile.jpg'
 import { useHistory } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, ListGroup, Image, ButtonGroup } from 'react-bootstrap'
@@ -59,6 +60,7 @@ const Session = props => {
   return (
     <div className="vh-100" id="desk">
       <SessionCreationModal show={!props.user.hasActiveSession} updateUser={props.updateUser}/>
+      <SetupRealtorProfileModal updateRealtorProfile={props.updateUserRealtorProfile} />
       <Container className="h-100 py-4">
         <Row className="h-100 mx-3">
           <Col xs="auto" className="mb-3 mt-auto">

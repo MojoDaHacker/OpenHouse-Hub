@@ -1,6 +1,6 @@
 import React from 'react';
 import WeatherDisplay from '../components/WeatherDisplay';
-import ResumeSessionModal from '../components/ResumeSessionModal';
+import ResumeSessionModal from '../components/modals/ResumeSessionModal';
 import Illustration1 from '../assets/illustrations/teamwork.svg'
 import { Container, Row, Col, Button, Image, ListGroup } from 'react-bootstrap'
 import { Plus, Window, Download, Archive, PeopleFill, HandThumbsUpFill } from 'react-bootstrap-icons'
