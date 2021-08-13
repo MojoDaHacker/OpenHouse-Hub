@@ -17,7 +17,13 @@ export default function useUser() {
     setUser(user)
   }
   const updateUserRealtorProfile = profile => {
-    fetch('/api/editUserRealtorProfile', { method: "POST", body: JSON.stringify(profile) })
+    const init =  {
+      headers: { 'Content-Type': 'application/json'},
+      method: "POST",
+      body: JSON.stringify(profile) 
+  }
+
+    fetch('/api/editUserRealtorProfile', init)
     .then(res => res.json())
     .then(user => setUser(user))
   }

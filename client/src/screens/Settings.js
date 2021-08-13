@@ -66,17 +66,12 @@ const AccountSettings = ({ account }) => (
     </div>
     <div>
       <h3>Realtor Profile <Button variant="link"><PencilSquare size={18}/></Button></h3>
-      <p>Realtor Picture</p>
-      <p>Realtor Badges</p>
-      <p>Realtor Contact</p>
-      <p>Realtor Email</p>
-      <p>Realtor Website</p>
+      {Object.entries(account.profile).reverse().map((val, i) => (
+        val[0] !== "_id" ? <p key={i}>{val[0][0].toUpperCase() + val[0].slice(1)} : {val[1]}</p> : null
+      ))}
     </div>
     <div>
-      <p>Connected Accounts</p>
-    </div>
-    <div>
-      <Button variant="danger">Delete Account</Button>
+      <Button variant="danger">Log Out</Button>
     </div>
   </>
 )

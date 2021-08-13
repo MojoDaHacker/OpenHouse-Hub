@@ -9,9 +9,9 @@ import useUser from './hooks/useUser'
 import SessionDetail from './screens/SessionDetails';
 
 export default function App(props){
-  const { user, updateUser } = useUser()
+  const UserKit = useUser()
 
-  if(!user){
+  if(!UserKit.user){
     return (
       <div className="vh-100 d-flex justify-content-center align-items-center">
         <Spinner animation="grow" />
@@ -21,18 +21,18 @@ export default function App(props){
     return (
       <Switch>
         <Route path="/session/:id">
-          <Session user={user} updateUser={updateUser}/>
+          <Session {...UserKit} />
         </Route>
         <Layout>
           <Switch>
             <Route path="/sessiondetail/:i">
-              <SessionDetail user={user} updateUser={updateUser}/>
+              <SessionDetail {...UserKit} />
             </Route>
             <Route path="/settings">
-              <Settings user={user} updateUser={updateUser}/>
+              <Settings {...UserKit} />
             </Route>
             <Route path="/">
-              <Home user={user} updateUser={updateUser}/>
+              <Home {...UserKit} />
             </Route>
           </Switch>
         </Layout>

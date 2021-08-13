@@ -5,12 +5,11 @@ const { SessionSchema } = require("./Session");
 
 // Create Schema
 const UserProfileSchema = new Schema({
-  nickname: String,
-  cell: Number,
+  name: String,
+  phone: Number,
   email: String,
-  group: String,
+  website: String,
   company: String,
-  servicing: [String]
 });
 
 // Create Schema

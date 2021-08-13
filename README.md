@@ -33,4 +33,4 @@ This application is meant to serve as a digital sign in sheet for Real Estate Ag
 
 ## Test It Out
 
-The application is live and running [here](https://openhouse-kit.herokuapp.com/)
+The application is live and running [here](https://openhouse-kit.herokuapp.com/).

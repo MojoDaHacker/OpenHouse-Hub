@@ -1,23 +1,19 @@
 import React, { useState } from 'react'
-import { Modal, Button } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 import RealtorProfileForm from '../forms/RealtorProfileForm'
 
 
 
-const SetupRealtorProfileModal = ({ updateRealtorProfile}) => {
-  const [show, setModal] = useState(true)
-  const handleCancel = () => setModal(!show)
+const SetupRealtorProfileModal = ({ show, updateRealtorProfile}) => {
+  const [showModal, setModal] = useState(show)
+  const dismissModal = () => setModal(!show)
 
   return (
-    <Modal show={show}>
+    <Modal show={showModal}>
       <Modal.Body>
         <p>It doesn't look like you have your realtor profile set up yet, let's do that now.</p>
-        <RealtorProfileForm onSubmit={updateRealtorProfile} />
+        <RealtorProfileForm dismissModal={dismissModal} updateRealtorProfile={updateRealtorProfile} />
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={handleCancel}>Cancel</Button>
-        <Button type="submit">Save</Button>
-      </Modal.Footer>
     </Modal>
   )
 }

@@ -16,9 +16,12 @@ router.get("/getUser", (req, res, next) => {
 
 router.post("/editUserRealtorProfile", (req, res, next) => {
   const user_id = req.session.passport.user
-  User.findById(user_id, '-password')
-  .populate('latestSession')
-  .populate('completedSessions')
+  
+  User.findById(user_id)
+  .then(user => {
+    user.profile = req.body
+    return user.save()
+  })
   .then(user => {
     res.send(user)
   })

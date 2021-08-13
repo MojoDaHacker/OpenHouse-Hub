@@ -9,14 +9,19 @@ import createCSV from '../lib/csv'
 
 export default class Home extends React.Component{
 
-  downloadCsv(session){
-    console.log(session)
-    createCSV(session.visitors)
+  downloadCsv(i){
+    const { user } = this.props
+    var csvContent = "data:text/csv;charset=utf-8," + user.completedSessions[i].visitors.map(e => Object.values(e).slice(1).join(",")).join("\n")
+
+    var encodedUri = encodeURI(csvContent)
+    window.open(encodedUri)
+
+  
+    // createCSV(session.visitors)
   }
   
   render(){
     const { user } = this.props
-  
     return (
       <Container className="d-flex flex-column vh-100">
         <ResumeSessionModal show={user.hasActiveSession} />
@@ -49,14 +54,14 @@ export default class Home extends React.Component{
                         <Col className="my-auto">
                           <div>
                             <PeopleFill size={18}/><span className=" m-3">{session.visitors.length}</span>
-                            <HandThumbsUpFill size={18}/><span className=" m-3">{session.visitors.length}</span>
+                            {/* <HandThumbsUpFill size={18}/><span className=" m-3">{session.visitors.length}</span> */}
                           </div>
                         </Col>
                         <Col className="my-auto">
                           <div className="text-right">
-                            <Button as={Link} variant="link" title="Open New Window" to={`/sessiondetail/${i}`}><Window size={18} /></Button>
-                            <Button onClick={() => this.downloadCsv(session)} variant="link" title="Download"><Download size={18} /></Button>
-                            <Button onClick={null} variant="link" title="Delete"><Archive size={18} /></Button>
+                            {/* <Button as={Link} variant="link" title="Open New Window" to={`/sessiondetail/${i}`}><Window size={18} /></Button> */}
+                            <Button onClick={() => this.downloadCsv(i)} variant="link" title="Download"><Download size={18} /></Button>
+                            {/* <Button onClick={null} variant="link" title="Delete"><Archive size={18} /></Button> */}
                           </div>
                         </Col>
                       </Row>

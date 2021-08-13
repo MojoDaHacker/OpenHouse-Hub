@@ -30,7 +30,7 @@
     "react-transition-group": "^4.4.1",
     "react-window": "^1.8.6",
     "sass": "^1.34.0",
-    "yup": "^0.32.8"
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
