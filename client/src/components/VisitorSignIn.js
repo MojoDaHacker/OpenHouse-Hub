@@ -122,7 +122,6 @@ const formatAppreciationName = name => {
     return capitalizeFirstLetter(name)
   }
 }
-
 const capitalizeFirstLetter = word => {
   if(typeof word !== "string")
     return 
