@@ -56,9 +56,6 @@ const Session = props => {
     })
   }
 
-  console.log(props.user)
-  console.log(props.user.profile)
-
   return (
     <div className="vh-100" id="desk">
       <SessionCreationModal show={!props.user.hasActiveSession} updateUser={props.updateUser}/>

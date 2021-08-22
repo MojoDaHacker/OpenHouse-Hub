@@ -1,8 +1,8 @@
 import React from 'react'
-import { Carousel, Image} from 'react-bootstrap'
+import { Carousel, Image } from 'react-bootstrap'
 import house1 from '../assets/img/house1.jpeg'
 import house2 from '../assets/img/house2.jpeg'
-import house3 from '../assets/img/house3.jpeg'
+import house3 from '../assets/img/house3.jpg'
 
 
 const ImageSideshow = () => {
