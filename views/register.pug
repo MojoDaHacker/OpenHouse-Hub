@@ -1,23 +1,28 @@
 -
   var list = [
     {
-      name: 'Name',
+      name: 'name',
+      displayName: 'Name',
       type: 'text'
     },
     {
-      name: 'Email',
+      name: 'email',
+      displayName: 'Email',
       type: 'email'
     },
     {
-      name: 'Password',
+      name: 'password',
+      displayName: 'Password',
       type: 'password'
     },
     {
-      name: 'Password Confirmation',
+      name: 'passwordConf',
+      displayName: 'Password Confirmation',
       type: 'password'
     },
     {
-      name: 'Company',
+      name: 'company',
+      displayName: 'Company',
       type: 'text'
     }
   ]
@@ -26,12 +31,12 @@ div( class="d-flex align-items-center justify-content-center h-100")
   form( class="w-25" method="post" action="/submissions/register" enctype="multipart/form-data")
     each field in list
       div(class="form-group mb-2")
-        label(for="exampleInputEmail1" class="mb-1")=field.name 
+        label(for="exampleInputEmail1" class="mb-1")=field.displayName 
         input(type=field.type class="form-control" name=field.name id="exampleInputEmail1" aria-describedby="emailHelp")
     div(class="form-group mb-2 form-check p-0")
       input(type="checkbox" name="form-check-input" id="exampleCheck1")
       label(class="form-check-label m-2" for="exampleCheck1") Remember Me
     div(class="form-group text-center m-3")
       button(type="submit" class="btn btn-primary") Register
-      button(type="button" class="btn btn-link") Already Have An Account
+      a(class="nav-link" href="/login") Already Have An Account
         

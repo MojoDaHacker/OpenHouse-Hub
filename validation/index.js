@@ -1,13 +1,15 @@
 const yup = require('yup')
 
 function validateRegisterInput(data) {
+  console.log(data)
   const registrationSchema = yup.object().shape({
     name: yup.string().required(),
     email: yup.string().email().required(),
     password: yup.string().required(),
-    passwordConf: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+    passwordConf: yup.string().required().oneOf([yup.ref('password'), null], 'Passwords must match'),
     company: yup.string().nullable(),
   })
+
 
   try {
     return registrationSchema.validateSync(data)  

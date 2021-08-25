@@ -22,6 +22,7 @@ export default class Home extends React.Component{
   
   render(){
     const { user } = this.props
+    console.log(user)
     return (
       <Container className="d-flex flex-column vh-100">
         <ResumeSessionModal show={user.hasActiveSession} />

@@ -13,6 +13,12 @@ router.get("/getUser", (req, res, next) => {
   })
   .catch(next)
 })
+router.get("/logout", (req, res, next) => {
+  req.session.destroy(err => err
+    ? res.status(500).send({message : "session could not be destroyed"}) 
+    : res.end()
+  )
+})
 
 router.post("/editUserRealtorProfile", (req, res, next) => {
   const user_id = req.session.passport.user

@@ -8,17 +8,6 @@ import { PencilSquare } from 'react-bootstrap-icons'
 const Settings = props => {
   const history = useHistory();
   
-  const logout = () => {
-    fetch('/logout')
-    .then(res => {
-      if(res.status == 200) {
-        // Cookies.remove('connect.sid', { path: '/' })
-        // authKit.authorizeUser(false)
-        // history.push("/")
-      }
-    })
-  }
-
   return (
     <Container className="mt-3">
       <Tab.Container defaultActiveKey={1}>
@@ -29,7 +18,7 @@ const Settings = props => {
           <Col>
             <Tab.Content className="p-3">
               <Tab.Pane eventKey={1}>
-                <AccountSettings account={props.user} />
+                <AccountSettings account={props.user} logout={props.logOutUser} />
               </Tab.Pane>
               <Tab.Pane eventKey={2}>
                 <GeneralSettings />
@@ -48,7 +37,7 @@ const Settings = props => {
   )
 }
 
-const AccountSettings = ({ account }) => (
+const AccountSettings = ({ account, logout }) => (
   <>
     <div>
       <h3>Plan</h3>
@@ -71,7 +60,7 @@ const AccountSettings = ({ account }) => (
       ))}
     </div>
     <div>
-      <Button variant="danger">Log Out</Button>
+      <Button variant="danger" onClick={logout}>Log Out</Button>
     </div>
   </>
 )

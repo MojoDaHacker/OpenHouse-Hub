@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const keys = require('../config/keys')
 
 // // Load User model
-const User = require("../models/User");
+const { User } = require("../models/User");
 
 exports.register = (req, res, next) => {
   // Implement the middleware function based on the options object

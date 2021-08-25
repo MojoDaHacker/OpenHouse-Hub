@@ -68,7 +68,7 @@ app.get('/login', (req, res) => {
 } )
 app.get('/register', (req, res) => {
   res.render('index', { main: "register" })
-} )
+})
 
 //err handling
 app.use(function (err, req, res, next) {
