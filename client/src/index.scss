@@ -1,9 +1,22 @@
+
+@import "../node_modules/bootstrap/scss/functions";
+
 #root{
-  font-family: Muli, Asap, sans-serif;
+  font-family: Muli, Asap, serif;
 }
-#root > h*{
-  font-family: source-han-sans-simplified-c,sans-serif;
-}
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+// Optional
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/helpers";
+
 body, html {
   height: 100%;
   width: 100%;
@@ -28,6 +41,8 @@ body {
   rgba(255,255,53,0.2) 8%),
   url(https://www.memonotepad.com/img/paperfibers.png);
 }
+
+
 
 // .weatherDisplayWidget {
 //   height: 0;

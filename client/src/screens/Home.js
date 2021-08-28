@@ -3,9 +3,8 @@ import WeatherDisplay from '../components/WeatherDisplay';
 import ResumeSessionModal from '../components/modals/ResumeSessionModal';
 import Illustration1 from '../assets/illustrations/teamwork.svg'
 import { Container, Row, Col, Button, Image, ListGroup } from 'react-bootstrap'
-import { Plus, Window, Download, Archive, PeopleFill, HandThumbsUpFill } from 'react-bootstrap-icons'
+import { Plus, Download, PeopleFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
-import createCSV from '../lib/csv'
 
 export default class Home extends React.Component{
 
@@ -22,7 +21,6 @@ export default class Home extends React.Component{
   
   render(){
     const { user } = this.props
-    console.log(user)
     return (
       <Container className="d-flex flex-column vh-100">
         <ResumeSessionModal show={user.hasActiveSession} />

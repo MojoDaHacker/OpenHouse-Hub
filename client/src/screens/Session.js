@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 // import SessionAdsAndInfo from '../components/SessionAdsAndInfo'
 import SessionCreationModal from '../components/modals/SessionCreationModal'
 import SetupRealtorProfileModal from '../components/modals/SetupRealtorProfileModal'
-import ProfilePic from '../assets/img/profile.jpg'
 import { useHistory } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, ListGroup, Image, ButtonGroup } from 'react-bootstrap'
 import { Check, X, EnvelopeFill, TelephoneFill, PersonCircle, PencilFill, CircleFill, InfoCircle, Building } from 'react-bootstrap-icons'
 import VisitorSignIn from '../components/VisitorSignIn'
+import HostPanel from '../components/HostPanel';
 
 const Session = props => {
   const [endSessionSwitch, setEndSession] = useState(false)
@@ -61,7 +61,7 @@ const Session = props => {
       <SessionCreationModal show={!props.user.hasActiveSession} updateUser={props.updateUser}/>
       <SetupRealtorProfileModal show={Object.keys(props.user.profile).length === 0} updateRealtorProfile={props.updateUserRealtorProfile} />
       <Container className="h-100 py-4">
-        <Row className="h-100 mx-3">
+        <Row className="h-100 mx-3 justify-content-center">
           <Col xs="auto" className="mb-3 mt-auto">
             <ButtonGroup vertical toggle={false} size="sm">
               <Button variant="light"><PencilFill /></Button>
@@ -69,32 +69,10 @@ const Session = props => {
               <Button onClick={endSession} variant="light" className="text-danger"><CircleFill /></Button>
             </ButtonGroup>
           </Col>
-          <Col className="h-100 d-flex flex-column">
-            <Card className="h-100 m-3">
-              <Card.Body className="d-flex flex-column h-100">
-                {/* <SessionAdsAndInfo /> */}
-                <div className="text-center h-100 d-flex flex-column align-items-center">
-                  <Image src={ProfilePic} width={200} roundedCircle/>
-                  <div className="h-100">
-                    <p className="">Realtor Badges</p>
-                  </div>
-                  <div className="h-100">
-                    <p className=""><PersonCircle />{props.user.name}</p>
-                  </div>
-                  <div className="h-100">
-                    <p className=""><TelephoneFill />Realtor Number</p>
-                  </div>
-                  <div className="h-100">
-                    <p className=""><EnvelopeFill />Realtor Email</p>
-                  </div>
-                  <div className="h-100">
-                    <p className=""><Building />Realtor Company</p>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col className="h-100 overflow-hidden">
+          {/* <Col className="h-100 d-flex flex-column">
+            <HostPanel {...props} />
+          </Col> */}
+          <Col xs={6} className="h-100 overflow-hidden">
             <div className="h-100 d-flex flex-column overflow-hidden rounded shadow" id="paper">
               <div>
                 <ListGroup className="px-2 border-bottom border-primary m-0" as={Row} horizontal>
