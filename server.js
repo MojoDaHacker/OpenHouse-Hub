@@ -80,10 +80,10 @@ app.use(function (err, req, res, next) {
 const port = process.env.PORT || 5000; // process.env.port is Heroku's port if you choose to deploy the app there
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));
 
-const handleProcessTermination = () => {
-  mongoose.disconnect()
-  process.exit(1)
-}
+// const handleProcessTermination = () => {
+//   mongoose.disconnect()
+//   process.exit(1)
+// }
 
-process.on('SIGTERM', handleProcessTermination)
-process.on('SIGINT', handleProcessTermination)
+// process.on('SIGTERM', handleProcessTermination)
+// process.on('SIGINT', handleProcessTermination)
