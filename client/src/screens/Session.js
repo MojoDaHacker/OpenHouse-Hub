@@ -58,7 +58,7 @@ const Session = props => {
 
   return (
     <div className="vh-100" id="desk">
-      {/* <SessionCreationModal show={!props.user.hasActiveSession} updateUser={props.updateUser}/> */}
+      <SessionCreationModal show={!props.user.hasActiveSession} updateUser={props.updateUser}/>
       <SetupRealtorProfileModal show={Object.keys(props.user.profile).length === 0} updateRealtorProfile={props.updateUserRealtorProfile} />
       <Container className="h-100 py-4">
         <Row className="h-100 mx-3 justify-content-center">
