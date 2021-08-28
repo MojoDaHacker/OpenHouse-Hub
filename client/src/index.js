@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ErrorBoundaryFallback from './ErrorBoundaryFallback';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
 import App from './App';
@@ -9,7 +10,9 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ErrorBoundaryFallback>
+        <App />
+      </ErrorBoundaryFallback>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

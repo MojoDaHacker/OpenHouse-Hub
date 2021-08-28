@@ -19,6 +19,7 @@ const SideNavbar = props => {
           </div>
         </Nav.Link> */}
         <Nav.Link as={Link} to="/settings" className="text-primary" eventKey="profile">
+          <span className="h6 mr-3">Settings</span>
           <Image src={ProfilePic} roundedCircle height="25" />
         </Nav.Link>
       </Nav>

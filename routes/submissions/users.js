@@ -31,7 +31,6 @@ const validationRegisterHandler = (req, res, next) => {
 }
 const validationLoginHandler = (req, res, next) => {
   // Form validation
-  console.log(req.body)
   const validation = validateLoginInput(req.body);
   if(!validation.errors){
     req.body = validation

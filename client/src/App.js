@@ -12,7 +12,6 @@ import SessionDetail from './screens/SessionDetails';
 export default function App(props){
   const UserKit = useUser()
 
-  console.log(UserKit)
 
   if(!UserKit.authenticationChecked){
     return (
@@ -30,9 +29,9 @@ export default function App(props){
       </Route>
       <Layout {...UserKit}>
         <Switch>
-          <Route path="/sessiondetail/:i">
+          {/* <Route path="/sessiondetail/:i">
             <SessionDetail {...UserKit} />
-          </Route>
+          </Route> */}
           <Route path="/settings">
             <Settings {...UserKit} />
           </Route>
